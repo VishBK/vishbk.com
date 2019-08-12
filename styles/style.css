@@ -51,8 +51,33 @@ p, li {
   line-height: 2;
 }
 
+.description {
+  font-size: 17px;
+  line-height: 2;
+}
+
 a#readOn {
   display: block;
   font-size: 15px;
   text-align: right;
+}
+
+a:link {
+  color: gray; 
+  text-decoration: none;
+}
+
+a:visited {
+  color: gray;
+  text-decoration: none;
+}
+
+a:hover {
+  color: lightgray;
+  text-decoration: underline;
+}
+
+a:active {
+  color: white;
+  text-decoration: underline;
 }
