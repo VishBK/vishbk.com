@@ -11,11 +11,6 @@ body {
   padding: 0 20px 20px 20px; 
 }
 
-.nowPlayingCard {
-  margin: 0 auto;
-  text-align:center;
-}
-
 h1 {
   font-family: 'Martel', serif;
   font-size: 60px;
@@ -25,7 +20,39 @@ h1 {
   text-shadow: 0px 0px 100px gray;
 }
 
+h4 {
+  font-family: 'Martel', serif;
+  font-size: 30px;
+  text-align: center;
+  margin: 0;
+  text-shadow: 0px 0px 100px gray;
+}
+
+.nowPlayingCard {
+  position: fixed;
+  left: 50%;
+  bottom: 10px;
+  transform: translate(-50%, 0%);
+  margin: 0 auto;
+}
+
+img#trackArt {
+  display: block;
+  margin: 15px auto;
+}
+
+.trackInfo {
+  font-size: 20px;
+  text-align: center;
+}
+
 p, li {
   font-size: 20px;    
   line-height: 2;
+}
+
+a#readOn {
+  display: block;
+  font-size: 15px;
+  text-align: right;
 }
