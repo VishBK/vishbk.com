@@ -28,7 +28,5 @@ var getSetLastFMData = function () {
     })
 }
   
-// Get the new one.
 getSetLastFMData();
-// Start the countdown.
 setInterval(getSetLastFMData, 10 * 1000);

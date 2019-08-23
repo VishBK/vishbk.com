@@ -8,7 +8,11 @@ html {
 body {
   width: 650px;
   margin: 0 auto;
-  padding: 0 20px 20px 20px; 
+  padding: 0 20px 20px 20px;
+  font-size: 10px;
+  font-family: 'Raleway', sans-serif;
+  background-color: #121212;
+  color: #FFFFFF;
 }
 
 h1 {
@@ -47,13 +51,30 @@ img#trackArt {
 }
 
 p, li {
+  color: #FFFFFF;
   font-size: 20px;    
   line-height: 2;
+}
+
+.card {
+  background-color: transparent;
+  border-bottom: 1px solid gray;
+  border-radius: 15px;
+  margin: 5px;
 }
 
 .description {
   font-size: 17px;
   line-height: 2;
+}
+
+.btn-collapse {
+  border-radius: 15px;
+}
+
+.card:hover {
+  border-radius: 15px;
+  background-color: rgba(255, 255, 255, 0.05)
 }
 
 a#readOn {
