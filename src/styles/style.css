@@ -97,6 +97,27 @@ img#trackArt {
   border-radius: 15px;
 }
 
+.fa {
+  padding: 20px;
+  font-size: 30px;
+  width: 30px;
+  text-align: center;
+  text-decoration: none;
+  margin: 5px 2px;
+  border-radius: 50%;
+}
+
+.fa:hover {
+  opacity: 0.7;
+  text-decoration: none;
+}
+
+.mediaIcons {
+  display: inline-block;
+  width: 100%;
+  text-align: center;
+}
+
 a#readOn {
   display: block;
   font-size: 15px;
