@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Martel|Raleway&display=swap" rel="stylesheet">
+        <link href="styles/style.css" rel="stylesheet">
+        <title>Vish's Website</title>
+    </head>
+    <body>
+        <h1>Music</h1>
+        <div class="textInfo">
+            <p>I started seriously listening to music in 2013 and rap quickly became my favorite genre. Now I listen to a 
+            lot of artists and would like to share my recommendations, if you value my opinion. 
+            All of these albums/songs are at least an 8/10 for me.</p>
+        </div>
+        <iframe class="musicRec" src="https://docs.google.com/spreadsheets/d/e/2PACX-1vTb6Sctq3G7OaqscEc30LnGeOsVMSkdypSa3TCFl94GcaHy-3wOwgGvijJd_PsMm7LUa8oEekRB6os4/pubhtml?gid=0&amp;single=true&amp;widget=true&amp;headers=false"></iframe>
+        <div>
+            <div class="textInfo">
+                <p>I started to track what tracks I listened to using 
+                    <a href="https://www.last.fm/user/VishBK">Last.fm</a> in December 2018. I created this Tableau
+                    project to visualize my top tracks, albums, and artists over any period of time. There's also other
+                    interesting things such as what time of day I listen to the most music and the number of new artists
+                    I've listened to every month. These graphs are interactive, so feel free to change the filters and
+                    click around!</p>
+                <p class="description">Please note: The Last.fm app missed many of my listens on my phone when I started
+                    this in December 2018, and I only found out and fixed it in July 2019.</p>
+            </div>
+            <div class='tableauPlaceholder' id='viz1566626207933' style='position: relative; width: 1700px; height: 1500px;'>
+                <noscript>
+                    <a href='#'>
+                        <img alt=' ' src='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;Mu&#47;MusicData_15666258552190&#47;Overview&#47;1_rss.png' style='border: none' />
+                    </a>
+                </noscript>
+                <object class='tableauViz' width='1700' height='1500' style='display:none;'>
+                    <param name='host_url' value='https%3A%2F%2Fpublic.tableau.com%2F' />
+                    <param name='embed_code_version' value='3' />
+                    <param name='site_root' value='' />
+                    <param name='name' value='MusicData_15666258552190&#47;Overview' />
+                    <param name='tabs' value='yes' />
+                    <param name='toolbar' value='yes' />
+                    <param name='static_image' value='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;Mu&#47;MusicData_15666258552190&#47;Overview&#47;1.png' />
+                    <param name='animate_transition' value='yes' />
+                    <param name='display_static_image' value='yes' />
+                    <param name='display_spinner' value='yes' />
+                    <param name='display_overlay' value='yes' />
+                    <param name='display_count' value='yes' />
+                </object>
+            </div>
+            <script type='text/javascript'>                    
+                var divElement = document.getElementById('viz1566626207933');                    
+                var vizElement = divElement.getElementsByTagName('object')[0];                    
+                vizElement.style.width='100%';
+                vizElement.style.height=(divElement.offsetWidth*0.75)+'px';                    
+                var scriptElement = document.createElement('script');                    
+                scriptElement.src = 'https://public.tableau.com/javascripts/api/viz_v1.js';                    
+                vizElement.parentNode.insertBefore(scriptElement, vizElement);                
+            </script>
+        </div>
+    </body>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script src="scripts/main.js"></script>
+</html>
