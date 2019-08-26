@@ -19,7 +19,7 @@ var getSetLastFMData = function () {
         dataType: "json",
         success : function(data) {
             var recentTrack = data.recenttracks.track[0];
-            $("#trackArt").attr("src", recentTrack.image[2]["#text"]);
+            $("#trackArt").attr("src", recentTrack.image[3]["#text"]);
             $("#trackTitle").html(recentTrack.name);
             $("#trackArtist").html(recentTrack.artist["#text"]);
         },
