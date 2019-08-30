@@ -37,6 +37,12 @@ p, li {
   line-height: 2;
 }
 
+p#readOn {
+  display: block;
+  font-size: 15px;
+  text-align: right;
+}
+
 .textInfo {
   margin: 10px auto;
   width: 38.2%;
@@ -113,12 +119,6 @@ img#trackArt {
   display: inline-block;
   width: 100%;
   text-align: center;
-}
-
-a#readOn {
-  display: block;
-  font-size: 15px;
-  text-align: right;
 }
 
 a:link {
