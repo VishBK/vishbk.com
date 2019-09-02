@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
-    <link href="styles/style.css" rel="stylesheet">
+    <link href="styles-public/style.css" rel="stylesheet">
+    <link href="styles-public/musicCard.css" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script>$(function(){$("#header").load("reuseheader.html");});</script>
     <div id="header"></div>
@@ -10,15 +11,30 @@
   <body>
     <h1>Welcome</h1>
     <div class="textInfo">
-      <p>My name is Vishvarath Balasubramanian-Karthikeyan (Vish for short).</p>
+      <p>My name is Vish Balasubramanian-Karthikeyan.</p>
       <p>I am a Sophomore at the University of Illinois at Urbana-Champaign studying Computer Science Engineering.
-      I'm interested in combining robotics engineering with artificial intelligence.</p>
-      <p id="readOn"><a href="page/about.html">Read on</a></p>
+      I'm interested in combining robotics engineering with artificial intelligence.
+      <span id="readOn"><a href="page/about.html">Read on</a></span></p>
     </div>
     <div class="card nowPlayingCard">
       <a href="page/music.html" id="toMusic">
         <h4 id="listeningTitle"></h4>
         <img id="trackArt" src="#">
+        <div class="musicBarContainer"id="musicBars">
+          <div class="bar"></div>
+          <div class="bar"></div>
+          <div class="bar"></div>
+          <div class="bar"></div>
+          <div class="bar"></div>
+          <div class="bar"></div>
+          <div class="bar"></div>
+          <div class="bar"></div>
+          <div class="bar"></div>
+          <div class="bar"></div>
+          <div class="bar"></div>
+          <div class="bar"></div>
+          <div class="bar"></div>
+        </div>
         <div class="trackInfo">
           <div id="trackTitle"></div>
           <div id="trackArtist"></div>

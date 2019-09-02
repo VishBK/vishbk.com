@@ -21,6 +21,7 @@ var getSetLastFMData = function () {
               $("#listeningTitle").html("Listening To");
           } else {
               $("#listeningTitle").html("Last Listened To");
+              removeElement("musicBars");
           }
           $("#trackArt").attr("src", recentTrack.image[3]["#text"]);
           $("#trackTitle").html(recentTrack.name);
@@ -29,6 +30,12 @@ var getSetLastFMData = function () {
       error : function(code, message) {
       }
   })
+}
+
+function removeElement(elementId) {
+    // Removes an element from the document
+    var element = document.getElementById(elementId);
+    element.parentNode.removeChild(element);
 }
 
 getSetLastFMData();

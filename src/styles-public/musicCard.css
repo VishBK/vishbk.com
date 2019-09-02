@@ -1,0 +1,612 @@
+.nowPlayingCard {
+  margin: 55px auto auto auto;
+  padding: 10px 0;
+  background-color: rgba(255, 255, 255, 0.05);
+  width: 23.6vw;
+  border-radius: 15px;
+  box-shadow: 0px 0px 15px black;
+}
+
+.nowPlayingCard:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  box-shadow: 0px 0px 30px black;
+}
+
+img#trackArt {
+  position: relative;
+  top: 0;
+  left: 0;
+  display: block;
+  width: 61.8%;
+  margin: 15px auto;
+  box-shadow: 0px 0px 15px black;
+}
+
+.trackInfo {
+  font-size: 1.33vw;
+  text-align: center;
+  width: 100%;
+}
+
+.musicBarContainer {
+  position: relative;
+  margin: auto;
+  top: -15px;
+  width: 61.8%;
+  height: 0px;
+  display: flex;
+  align-items: flex-end;
+}
+
+.bar {
+  width: 18px;
+  min-height: 1vh;
+  margin: 0 1px;
+  box-shadow: 0 10px 15px #000;
+}
+
+.bar:nth-child(0) {
+  background-color: rgba(128, 128, 128, 0.5);
+  animation: grow0 2979ms alternate infinite;
+}
+
+@keyframes grow0 {
+  0% {
+    height: 1vh;
+  }
+  10% {
+    height: 2vh;
+  }
+  20% {
+    height: 5vh;
+  }
+  30% {
+    height: 2vh;
+  }
+  40% {
+    height: 4vh;
+  }
+  50% {
+    height: 6vh;
+  }
+  60% {
+    height: 4vh;
+  }
+  70% {
+    height: 8vh;
+  }
+  80% {
+    height: 3vh;
+  }
+  90% {
+    height: 1vh;
+  }
+  100% {
+    height: 4vh;
+  }
+}
+.bar:nth-child(1) {
+  background-color: rgba(128, 128, 128, 0.5);
+  animation: grow1 3454ms alternate infinite;
+}
+
+@keyframes grow1 {
+  0% {
+    height: 6vh;
+  }
+  10% {
+    height: 5vh;
+  }
+  20% {
+    height: 1vh;
+  }
+  30% {
+    height: 5vh;
+  }
+  40% {
+    height: 8vh;
+  }
+  50% {
+    height: 3vh;
+  }
+  60% {
+    height: 7vh;
+  }
+  70% {
+    height: 5vh;
+  }
+  80% {
+    height: 8vh;
+  }
+  90% {
+    height: 5vh;
+  }
+  100% {
+    height: 4vh;
+  }
+}
+.bar:nth-child(2) {
+  background-color: rgba(128, 128, 128, 0.5);
+  animation: grow2 2524ms alternate infinite;
+}
+
+@keyframes grow2 {
+  0% {
+    height: 2vh;
+  }
+  10% {
+    height: 3vh;
+  }
+  20% {
+    height: 3vh;
+  }
+  30% {
+    height: 1vh;
+  }
+  40% {
+    height: 3vh;
+  }
+  50% {
+    height: 3vh;
+  }
+  60% {
+    height: 6vh;
+  }
+  70% {
+    height: 6vh;
+  }
+  80% {
+    height: 5vh;
+  }
+  90% {
+    height: 1vh;
+  }
+  100% {
+    height: 2vh;
+  }
+}
+.bar:nth-child(3) {
+  background-color: rgba(128, 128, 128, 0.5);
+  animation: grow3 3472ms alternate infinite;
+}
+
+@keyframes grow3 {
+  0% {
+    height: 7vh;
+  }
+  10% {
+    height: 2vh;
+  }
+  20% {
+    height: 3vh;
+  }
+  30% {
+    height: 1vh;
+  }
+  40% {
+    height: 3vh;
+  }
+  50% {
+    height: 5vh;
+  }
+  60% {
+    height: 7vh;
+  }
+  70% {
+    height: 2vh;
+  }
+  80% {
+    height: 2vh;
+  }
+  90% {
+    height: 2vh;
+  }
+  100% {
+    height: 1vh;
+  }
+}
+.bar:nth-child(4) {
+  background-color: rgba(128, 128, 128, 0.5);
+  animation: grow4 2675ms alternate infinite;
+}
+
+@keyframes grow4 {
+  0% {
+    height: 5vh;
+  }
+  10% {
+    height: 7vh;
+  }
+  20% {
+    height: 6vh;
+  }
+  30% {
+    height: 6vh;
+  }
+  40% {
+    height: 6vh;
+  }
+  50% {
+    height: 2vh;
+  }
+  60% {
+    height: 4vh;
+  }
+  70% {
+    height: 8vh;
+  }
+  80% {
+    height: 3vh;
+  }
+  90% {
+    height: 6vh;
+  }
+  100% {
+    height: 2vh;
+  }
+}
+.bar:nth-child(5) {
+  background-color: rgba(128, 128, 128, 0.5);
+  animation: grow5 3028ms alternate infinite;
+}
+
+@keyframes grow5 {
+  0% {
+    height: 2vh;
+  }
+  10% {
+    height: 4vh;
+  }
+  20% {
+    height: 8vh;
+  }
+  30% {
+    height: 7vh;
+  }
+  40% {
+    height: 1vh;
+  }
+  50% {
+    height: 6vh;
+  }
+  60% {
+    height: 8vh;
+  }
+  70% {
+    height: 2vh;
+  }
+  80% {
+    height: 5vh;
+  }
+  90% {
+    height: 6vh;
+  }
+  100% {
+    height: 1vh;
+  }
+}
+.bar:nth-child(6) {
+  background-color: rgba(128, 128, 128, 0.5);
+  animation: grow6 3493ms alternate infinite;
+}
+
+@keyframes grow6 {
+  0% {
+    height: 7vh;
+  }
+  10% {
+    height: 5vh;
+  }
+  20% {
+    height: 5vh;
+  }
+  30% {
+    height: 2vh;
+  }
+  40% {
+    height: 4vh;
+  }
+  50% {
+    height: 7vh;
+  }
+  60% {
+    height: 1vh;
+  }
+  70% {
+    height: 2vh;
+  }
+  80% {
+    height: 5vh;
+  }
+  90% {
+    height: 6vh;
+  }
+  100% {
+    height: 4vh;
+  }
+}
+.bar:nth-child(7) {
+  background-color: rgba(128, 128, 128, 0.5);
+  animation: grow7 2930ms alternate infinite;
+}
+
+@keyframes grow7 {
+  0% {
+    height: 2vh;
+  }
+  10% {
+    height: 6vh;
+  }
+  20% {
+    height: 6vh;
+  }
+  30% {
+    height: 2vh;
+  }
+  40% {
+    height: 3vh;
+  }
+  50% {
+    height: 8vh;
+  }
+  60% {
+    height: 2vh;
+  }
+  70% {
+    height: 1vh;
+  }
+  80% {
+    height: 2vh;
+  }
+  90% {
+    height: 8vh;
+  }
+  100% {
+    height: 2vh;
+  }
+}
+.bar:nth-child(8) {
+  background-color: rgba(128, 128, 128, 0.5);
+  animation: grow8 3462ms alternate infinite;
+}
+
+@keyframes grow8 {
+  0% {
+    height: 5vh;
+  }
+  10% {
+    height: 4vh;
+  }
+  20% {
+    height: 1vh;
+  }
+  30% {
+    height: 4vh;
+  }
+  40% {
+    height: 7vh;
+  }
+  50% {
+    height: 2vh;
+  }
+  60% {
+    height: 2vh;
+  }
+  70% {
+    height: 1vh;
+  }
+  80% {
+    height: 1vh;
+  }
+  90% {
+    height: 3vh;
+  }
+  100% {
+    height: 2vh;
+  }
+}
+.bar:nth-child(9) {
+  background-color: rgba(128, 128, 128, 0.5);
+  animation: grow9 2775ms alternate infinite;
+}
+
+@keyframes grow9 {
+  0% {
+    height: 8vh;
+  }
+  10% {
+    height: 8vh;
+  }
+  20% {
+    height: 3vh;
+  }
+  30% {
+    height: 2vh;
+  }
+  40% {
+    height: 4vh;
+  }
+  50% {
+    height: 8vh;
+  }
+  60% {
+    height: 6vh;
+  }
+  70% {
+    height: 3vh;
+  }
+  80% {
+    height: 5vh;
+  }
+  90% {
+    height: 2vh;
+  }
+  100% {
+    height: 7vh;
+  }
+}
+.bar:nth-child(10) {
+  background-color: rgba(128, 128, 128, 0.5);
+  animation: grow10 3235ms alternate infinite;
+}
+
+@keyframes grow10 {
+  0% {
+    height: 5vh;
+  }
+  10% {
+    height: 6vh;
+  }
+  20% {
+    height: 2vh;
+  }
+  30% {
+    height: 8vh;
+  }
+  40% {
+    height: 1vh;
+  }
+  50% {
+    height: 1vh;
+  }
+  60% {
+    height: 1vh;
+  }
+  70% {
+    height: 2vh;
+  }
+  80% {
+    height: 6vh;
+  }
+  90% {
+    height: 6vh;
+  }
+  100% {
+    height: 5vh;
+  }
+}
+.bar:nth-child(11) {
+  background-color: rgba(128, 128, 128, 0.5);
+  animation: grow11 2599ms alternate infinite;
+}
+
+@keyframes grow11 {
+  0% {
+    height: 3vh;
+  }
+  10% {
+    height: 5vh;
+  }
+  20% {
+    height: 3vh;
+  }
+  30% {
+    height: 8vh;
+  }
+  40% {
+    height: 6vh;
+  }
+  50% {
+    height: 1vh;
+  }
+  60% {
+    height: 1vh;
+  }
+  70% {
+    height: 3vh;
+  }
+  80% {
+    height: 2vh;
+  }
+  90% {
+    height: 3vh;
+  }
+  100% {
+    height: 2vh;
+  }
+}
+.bar:nth-child(12) {
+  background-color: rgba(128, 128, 128, 0.5);
+  animation: grow12 2655ms alternate infinite;
+}
+
+@keyframes grow12 {
+  0% {
+    height: 5vh;
+  }
+  10% {
+    height: 3vh;
+  }
+  20% {
+    height: 6vh;
+  }
+  30% {
+    height: 3vh;
+  }
+  40% {
+    height: 6vh;
+  }
+  50% {
+    height: 3vh;
+  }
+  60% {
+    height: 2vh;
+  }
+  70% {
+    height: 7vh;
+  }
+  80% {
+    height: 8vh;
+  }
+  90% {
+    height: 8vh;
+  }
+  100% {
+    height: 3vh;
+  }
+}
+.bar:nth-child(13) {
+  background-color: rgba(128, 128, 128, 0.5);
+  animation: grow13 3384ms alternate infinite;
+}
+
+@keyframes grow13 {
+  0% {
+    height: 6vh;
+  }
+  10% {
+    height: 1vh;
+  }
+  20% {
+    height: 6vh;
+  }
+  30% {
+    height: 7vh;
+  }
+  40% {
+    height: 3vh;
+  }
+  50% {
+    height: 6vh;
+  }
+  60% {
+    height: 1vh;
+  }
+  70% {
+    height: 5vh;
+  }
+  80% {
+    height: 5vh;
+  }
+  90% {
+    height: 7vh;
+  }
+  100% {
+    height: 2vh;
+  }
+}
+a#toMusic:hover {
+  text-decoration: none;
+}
+
+/*# sourceMappingURL=musicCard.css.map */

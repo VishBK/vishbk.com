@@ -1,0 +1,120 @@
+html {
+  font-family: "Raleway", sans-serif;
+  background-color: #121212;
+  color: #FFFFFF;
+}
+
+body {
+  position: relative;
+  margin: 0 auto;
+  padding: 0 20px 20px 20px;
+  font-size: 50%;
+  font-family: "Raleway", sans-serif;
+  background-color: #121212;
+  color: #FFFFFF;
+}
+
+h1 {
+  font-family: "Martel", serif;
+  font-size: 8em;
+  text-align: center;
+  margin: 0;
+  padding: 25px 0 0 0;
+  text-shadow: 0px 0px 100px gray;
+}
+
+h4 {
+  font-family: "Martel", serif;
+  font-size: 2vw;
+  text-align: center;
+  margin: 0;
+  text-shadow: 0px 0px 100px gray;
+}
+
+p, li {
+  color: #FFFFFF;
+  font-size: 20px;
+  line-height: 2;
+}
+
+#readOn {
+  display: block;
+  font-size: 15px;
+  text-align: right;
+}
+
+.textInfo {
+  margin: 10px auto;
+  width: 38.2vw;
+}
+
+.musicRec {
+  display: block;
+  width: 850px;
+  height: 750px;
+  margin: 0 auto;
+}
+
+.descriptionCard {
+  background-color: transparent;
+  border-bottom: 1px solid gray;
+  border-radius: 15px;
+  margin: 5px;
+}
+
+.descriptionCard:hover {
+  border-radius: 15px;
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.description {
+  font-size: 17px;
+  line-height: 2;
+}
+
+.btn-collapse {
+  border-radius: 15px;
+}
+
+.fas, .fab {
+  padding: 20px;
+  font-size: 30px;
+  width: 30px;
+  text-align: center;
+  text-decoration: none;
+  margin: 5px 2px;
+  border-radius: 50%;
+}
+
+.fas:hover, .fab:hover {
+  opacity: 1;
+  text-decoration: none;
+}
+
+.mediaIcons {
+  display: inline-block;
+  width: 100%;
+  text-align: center;
+}
+
+a:link {
+  color: gray;
+  text-decoration: none;
+}
+
+a:visited {
+  color: gray;
+  text-decoration: none;
+}
+
+a:hover {
+  color: lightgray;
+  text-decoration: underline;
+}
+
+a:active {
+  color: white;
+  text-decoration: underline;
+}
+
+/*# sourceMappingURL=style.css.map */
