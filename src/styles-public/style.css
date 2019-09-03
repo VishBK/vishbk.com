@@ -35,6 +35,7 @@ p, li {
   color: #FFFFFF;
   font-size: 20px;
   line-height: 2;
+  text-align: left;
 }
 
 #readOn {
@@ -74,6 +75,17 @@ p, li {
 
 .btn-collapse {
   border-radius: 15px;
+}
+
+.arrow {
+  border: solid gray;
+  border-width: 0 2px 2px 0;
+  float: right;
+  margin: 10px auto;
+  padding: 4px;
+  transform: rotate(45deg);
+  -webkit-transform: rotate(45deg);
+  transition: transform 500ms;
 }
 
 .fas, .fab {
