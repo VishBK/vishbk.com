@@ -19,6 +19,7 @@ img#trackArt {
   display: block;
   width: 61.8%;
   margin: 15px auto;
+  border-radius: 15px;
   box-shadow: 0px 0px 15px black;
 }
 
@@ -39,6 +40,7 @@ $bars: 13;
   height: 0px;
   display: flex;
   align-items: flex-end;
+  visibility: hidden;
 }
 
 .bar {
@@ -46,12 +48,12 @@ $bars: 13;
   min-height: 1vh;
   margin: 0 1px;
   box-shadow: 0 10px 15px #000;
+  background-color: rgba(128, 128, 128, 0.5);
+  border-radius: 15px;
 }
 
 @for $i from 0 through $bars {
   .bar:nth-child(#{$i}) {
-      $saturation: 0;
-      background-color: hsla(0, $saturation, 50%, 0.5);
       animation: grow#{$i} #{random(1000) + 2500}ms alternate infinite;
   }
   

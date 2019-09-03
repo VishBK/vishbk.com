@@ -4,6 +4,7 @@
     <link href="styles-public/style.css" rel="stylesheet">
     <link href="styles-public/musicCard.css" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/color-thief/2.3.0/color-thief.umd.js"></script>
     <script>$(function(){$("#header").load("reuseheader.html");});</script>
     <div id="header"></div>
     <script src="scripts/lastfm.js"></script>
@@ -18,9 +19,9 @@
     </div>
     <div class="card nowPlayingCard">
       <a href="page/music.html" id="toMusic">
-        <h4 id="listeningTitle"></h4>
-        <img id="trackArt" src="#">
-        <div class="musicBarContainer"id="musicBars">
+        <h4 id="listeningTitle">Listening To</h4>
+        <img id="trackArt" src="images/Grey_Square.png" alt="Album Art">
+        <div class="musicBarContainer" id="musicBars">
           <div class="bar"></div>
           <div class="bar"></div>
           <div class="bar"></div>
@@ -36,8 +37,8 @@
           <div class="bar"></div>
         </div>
         <div class="trackInfo">
-          <div id="trackTitle"></div>
-          <div id="trackArtist"></div>
+          <div id="trackTitle">Track Title</div>
+          <div id="trackArtist">Track Artist</div>
         </div>
       </a>
     </div>
