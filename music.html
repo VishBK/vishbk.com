@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Music | Vish's Website</title>
+    <link rel="icon" type="image/png" href="/icons/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="/icons/favicon.svg" />
+    <link rel="shortcut icon" href="/icons/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png" />
+    <meta name="apple-mobile-web-app-title" content="Vish's Site" />
+    <link rel="manifest" href="/icons/site.webmanifest" />
+    <link rel="stylesheet" type="text/css" href="src/scss/music.scss">
+    <script src="src/scripts/background.js" type="module"></script>
+    <script src="src/scripts/music.js" type="module"></script>
+    <script type="module" src="https://public.tableau.com/javascripts/api/tableau.embedding.3.latest.min.js"></script>
+</head>
+<body>
+    <div id="background"></div>
+    <div class="music-layout">
+        <div class="acrylic marquee-column">
+            <div class="marquee-mask">
+                <div class="marquee-content" id="marquee-original"></div>
+                <!-- Duplicate for seamless loop -->
+                <div class="marquee-content" id="marquee-duplicate" aria-hidden="true"></div>
+            </div>
+        </div>
+        <div class="center-column">
+            <div class="acrylic viz-container">
+                <tableau-viz id="tableauViz" 
+                    src="https://public.tableau.com/views/MusicData_15666258552190/Overview">
+                </tableau-viz>
+            </div>
+            <div class="acrylic last-played-container">
+                <a href="https://last.fm/user/vishbk" target="_blank" class="last-played-label">Last played</a>
+                <div class="last-fm-content">
+                    <!-- Two containers for cross-fading -->
+                    <div id="track-current" class="track-info-container active">
+                        <div class="content-wrapper">
+                            <img class="last-fm-art" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="Album Art">
+                            <div class="last-fm-info">
+                                <span class="track-name"></span>
+                                <span class="separator"></span>
+                                <span class="artist-name"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="track-next" class="track-info-container">
+                        <div class="content-wrapper">
+                            <img class="last-fm-art" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="Album Art">
+                            <div class="last-fm-info">
+                                <span class="track-name"></span>
+                                <span class="separator"></span>
+                                <span class="artist-name"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="acrylic concert-column">
+            <h3>Concerts</h3>
+            <div class="concerts-content">
+                <div class="concert-year-group">
+                    <h4 class="year-heading">2025</h4>
+                    <ul class="concert-list">
+                        <li>
+                            <span class="artist">Clipse</span>
+                            <span class="tour">Let God Sort Em Out Tour</span>
+                        </li>
+                        <li>
+                            <span class="artist">clipping.</span>
+                            <span class="tour">Dead Channel Sky Tour</span>
+                        </li>
+                        <li>
+                            <span class="artist">The Weeknd</span>
+                            <span class="tour">After Hours Til Dawn Tour</span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="concert-year-group">
+                    <h4 class="year-heading">2024</h4>
+                    <ul class="concert-list">
+                        <li>
+                            <span class="artist">Hans Zimmer</span>
+                            <span class="tour">Hans Zimmer Live</span>
+                        </li>
+                        <li>
+                            <span class="artist">JPEGMAFIA</span>
+                            <span class="tour">LAY DOWN MY LIFE TOUR</span>
+                        </li>
+                        <li>
+                            <span class="artist">Childish Gambino</span>
+                            <span class="tour">The New World Tour</span>
+                        </li>
+                        <li>
+                            <span class="artist">ScHoolboy Q</span>
+                            <span class="tour">Blue Lips Weekends</span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="concert-year-group">
+                    <h4 class="year-heading">2023</h4>
+                    <ul class="concert-list">
+                        <li>
+                            <span class="artist">Travis Scott</span>
+                            <span class="tour">Circus Maximus Tour</span>
+                        </li>
+                        <li>
+                            <span class="artist">Travis Scott</span>
+                            <span class="tour">Circus Maximus Tour</span>
+                        </li>
+                        <li>
+                            <span class="artist">Run the Jewels</span>
+                            <span class="tour">Run the Jewels X</span>
+                        </li>
+                        <li>
+                            <span class="artist">Run the Jewels</span>
+                            <span class="tour">Run the Jewels X</span>
+                        </li>
+                        <li>
+                            <span class="artist">Run the Jewels</span>
+                            <span class="tour">Run the Jewels X</span>
+                        </li>
+                        <li>
+                            <span class="artist">Run the Jewels</span>
+                            <span class="tour">Run the Jewels X</span>
+                        </li>
+                        <li>
+                            <span class="artist">Death Grips</span>
+                            <span class="tour">Death Grips In Concert</span>
+                        </li>
+                        <li>
+                            <span class="artist">JPEGMAFIA & Danny Brown</span>
+                            <span class="tour">SCARING THE HOES Tour</span>
+                        </li>
+                        <li>
+                            <span class="artist">M83</span>
+                            <span class="tour">Fantasy Tour</span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="concert-year-group">
+                    <h4 class="year-heading">2022</h4>
+                    <ul class="concert-list">
+                        <li>
+                            <span class="artist">Kid Cudi</span>
+                            <span class="tour">To The Moon Tour</span>
+                        </li>
+                        <li>
+                            <span class="artist">Pusha T</span>
+                            <span class="tour">It's Almost Dry Tour</span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="concert-year-group">
+                    <h4 class="year-heading">2021</h4>
+                    <ul class="concert-list">                          
+                        <li>
+                            <span class="artist">JPEGMAFIA</span>
+                            <span class="tour">LP! Tour</span>
+                        </li>
+                        <li>
+                            <span class="artist">Kanye West</span>
+                            <span class="tour">DONDA SOLDIER FIELD</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="lightbox-backdrop"></div>
+</body>
+</html>

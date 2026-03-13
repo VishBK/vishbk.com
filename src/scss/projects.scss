@@ -1,0 +1,442 @@
+@use 'variables' as var;
+@use 'index';
+
+@keyframes circular-path-drift {
+    0% {
+        translate: 24px 0;
+    }
+
+    12.5% {
+        translate: 17px 8px;
+    }
+
+    25% {
+        translate: 0 10px;
+    }
+
+    37.5% {
+        translate: -17px 8px;
+    }
+
+    50% {
+        translate: -24px 0;
+    }
+
+    62.5% {
+        translate: -17px -8px;
+    }
+
+    75% {
+        translate: 0 -10px;
+    }
+
+    87.5% {
+        translate: 17px -8px;
+    }
+
+    100% {
+        translate: 24px 0;
+    }
+}
+
+:root {
+    --light-color-rgb: #{var.$light-color-rgb};
+    --dark-color-rgb: #{var.$dark-color-rgb};
+}
+
+html {
+    overflow-x: hidden;
+    /* Prevents horizontal scroll */
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar {
+        display: none;
+    }
+}
+
+.project-container {
+    position: relative;
+    width: 100vw;
+    min-height: 100vh;
+    margin-bottom: 10vh;
+}
+
+// --- The Inner Wrapper for clicking and hover scaling ---
+.card-content {
+    @include index.acrylic;
+
+    background-color: rgb(var(--card-bg-color), 75%);
+    color: oklch(var(--card-text-rgb));
+    padding: 24px 24px 0;
+    width: 100%;
+    height: 100%;
+    transform-origin: center;
+
+    // Fast transition for its own interactive scaling.
+    transition: transform 0.5s ease-out, background-color 0.5s ease-out;
+    transform: none; // Override mixin's translateZ(0) to rely on standard stacking
+    overflow-y: auto;
+    scrollbar-width: none; // Hide scrollbar for cleaner look
+
+    &::-webkit-scrollbar {
+        display: none;
+    }
+}
+
+// --- The Parent Card for center positioning ---
+.project-card {
+    animation: circular-path-drift 20s linear infinite;
+    cursor: pointer;
+
+    // Set a base top/left; the transform will position it from here.
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: clamp(400px, 30vw, 600px);
+    overflow: visible;
+    opacity: 0; // Hidden initially for stability
+
+    // 1. Read the initial position from the variable set by JS.
+    transform: var(--initial-transform);
+    max-height: 80vh; // Constrain height to prevent jump on close
+
+    // 2. The entire positioning animation is now on a SINGLE property.
+    z-index: 1;
+    transition:
+        transform 1s ease-in-out,
+        width 1s ease-in-out,
+        height 1s ease-in-out,
+        max-height 1s ease-in-out, // Animate max-height
+        opacity 0.5s ease-out;
+
+    // --- LOADING/TRANSITION Logic ---
+    .project-container.is-preparing &,
+    .project-container.is-resizing & {
+        transition: none !important;
+    }
+
+    .project-container.is-ready & {
+        opacity: 1;
+    }
+
+    // --- EXPANDED State ---
+    &.expanded {
+        animation-play-state: paused;
+        z-index: 10;
+
+        // 1. Stable Centering: Locking the center of the card to the screen center.
+        // We subtract the current drift position (passed via JS vars) so the visual center is exact.
+        transform:
+            translate(50vw, 50dvh) translate(-50%, -55%) translate(calc(-1 * var(--drift-x, 0px)), calc(-1 * var(--drift-y, 0px)));
+
+        // 2. Proportional Scaling: 
+        // Tie width to 'vh' (height). On short screens, the card narrows, shrinking the image
+        // proportionally to leave vertical room for text.
+        width: clamp(320px, min(90vw, 70vh), 750px);
+        max-height: 85dvh;
+
+        .card-content {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden; // Allow the details section to handle internal scrolling
+        }
+    }
+
+    &.expanded .card-content {
+        background-color: rgb(var(--card-bg-color), 80%);
+    }
+
+    &:hover {
+        animation-play-state: paused;
+        z-index: 2;
+    }
+
+    // --- State Interactions (Hover/Active) ---
+    &:hover .card-content {
+        background-color: rgb(var(--card-bg-color), 85%);
+        transform: scale(1.05); // Works in expanded state too
+    }
+
+    &:active:not(:has(.prev:hover, .next:hover)) .card-content {
+        transform: scale(1);
+        transition: transform 0.1s ease-out;
+    }
+}
+
+// Move scroll specifically to description area when expanded to prevent cropping
+.project-card.expanded .project-details {
+    overflow-y: auto;
+    flex: 1;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+
+    &::-webkit-scrollbar {
+        display: none;
+    }
+}
+
+/* --- Slideshow Styles --- */
+.slideshow-container {
+    position: relative;
+    margin: auto;
+    overflow: hidden;
+    display: grid;
+}
+
+.slide {
+    grid-area: 1 / 1;
+    width: 100%;
+    transition: transform 0.5s ease;
+    display: flex;
+    align-items: center;
+}
+
+.slide.is-prev {
+    transform: translateX(-100%);
+}
+
+.slide.is-active {
+    transform: translateX(0);
+}
+
+.slide.is-next {
+    transform: translateX(100%);
+}
+
+/* --- Navigation Button Styles --- */
+.prev,
+.next {
+    cursor: pointer;
+    position: absolute;
+    top: 50%;
+    width: 50px;
+    height: 50px;
+    margin: -25px 0 0 5px;
+    border-radius: 50%;
+    background-color: rgb(var(--card-bg-color), 0);
+    color: oklch(var(--card-text-rgb));
+    font-weight: bold;
+    font-size: 18px;
+    transition: all 0.2s ease;
+    visibility: hidden;
+    opacity: 0;
+    pointer-events: none;
+    z-index: 2;
+}
+
+.next {
+    right: 5px;
+}
+
+.project-card.expanded .prev,
+.project-card.expanded .next {
+    background-color: rgb(var(--card-bg-color), 0.4);
+    visibility: visible;
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.slideshow-container.is-first-slide .prev,
+.slideshow-container.is-last-slide .next {
+    pointer-events: none;
+    opacity: 0;
+    visibility: hidden;
+}
+
+.project-card.expanded .prev:hover,
+.project-card.expanded .next:hover {
+    background-color: rgb(var(--card-bg-color), 1);
+}
+
+/* --- Project Detail Styles --- */
+.project-tech-container {
+    display: flex;
+    justify-content: space-around;
+    margin: 1rem 0;
+}
+
+.project-tech-list {
+    flex: 1;
+}
+
+.project-tech-list h3 {
+    font-size: 1.5rem;
+    text-align: center;
+    color: oklch(var(--card-text-rgb) / 90%);
+}
+
+.project-tech-list ul {
+    list-style-position: outside;
+    margin-left: 1.5rem;
+    padding-left: 1.5rem;
+    padding-right: 0.25rem;
+}
+
+.project-tech-list li {
+    margin-bottom: 4px;
+}
+
+.project-tech-list:only-child {
+    /* Override flex behavior to shrink-to-fit content */
+    flex: none;
+    text-align: center;
+    /* Center the content (the ul) */
+}
+
+.project-tech-list:only-child ul {
+    margin: 0;
+    /* Remove all margins */
+    padding: 0;
+    /* Remove all padding */
+    display: inline-block;
+    /* Allows the block to be centered */
+    text-align: left;
+    /* Keeps the text and bullets left-aligned */
+}
+
+.project-tech-list:first-child:nth-last-child(2) {
+    border-right: 1px solid oklch(var(--card-text-rgb) / 70%);
+}
+
+.project-header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding-top: 12px;
+}
+
+.project-card.expanded .project-header {
+    padding-bottom: 0;
+}
+
+.project-title {
+    font-size: 2rem;
+    text-align: center;
+    color: oklch(var(--card-text-rgb));
+}
+
+.project-duration {
+    font-style: italic;
+    text-align: center;
+    color: oklch(var(--card-text-rgb) / 70%);
+    border-bottom: 1px solid oklch(var(--card-text-rgb) / 20%);
+    padding: 0.5rem 0;
+}
+
+.project-details {
+    overflow: hidden;
+    max-height: 0;
+    padding: 0 1rem 1rem;
+    color: oklch(var(--card-text-rgb) / 80%);
+    opacity: 0;
+    transition:
+        max-height 1s ease-in-out,
+        opacity 1s ease-in-out;
+}
+
+.project-card.expanded .project-details {
+    max-height: 1000px;
+    opacity: 1;
+}
+
+.project-description {
+    padding-top: 0.5rem;
+    line-height: 1.4;
+}
+
+.slide img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 0.5rem;
+    border: 1px solid oklch(var(--card-text-rgb) / 10%);
+    transition: transform 0.5s ease-in-out;
+}
+
+.media-icons {
+    color: oklch(var(--card-text-rgb) / 50%);
+}
+
+.media-icons a.fa-file-lines:hover {
+    color: #cccc;
+}
+
+.tableau-icon {
+    $tableau-colors: (
+        1: #e8762d,
+        2: #c72037,
+        3: #5b879b,
+        4: #5c6692,
+        5: #eb9129,
+        6: #5c6692,
+        7: #1f457e,
+        8: #7199a6
+    );
+
+svg {
+    width: 2em;
+    height: 2em;
+
+    path {
+        fill: oklch(var(--card-text-rgb) / 50%);
+        transition: fill 0.5s ease;
+    }
+}
+
+&:hover svg {
+    @each $index, $color in $tableau-colors {
+        path:nth-child(#{$index}) {
+            fill: $color;
+        }
+    }
+}
+}
+
+/* --- Mobile Layout --- */
+@media only screen and (width <=#{var.$mobile-width}) {
+
+    .prev,
+    .next {
+        font-size: 11px
+    }
+
+    .project-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 2rem;
+        position: static;
+        height: auto;
+        width: 100%;
+    }
+
+    .project-card {
+        /* Override JS inline styles for position */
+        position: static !important;
+        top: auto !important;
+        left: auto !important;
+
+        /* Adjust size and remove desktop animations */
+        width: 90vw;
+        max-width: 600px;
+        animation: none;
+        max-height: none;
+    }
+
+    .card-content {
+        overflow-y: visible;
+    }
+
+    .project-card.expanded {
+        width: 90vw;
+        transform: none;
+        max-height: none;
+    }
+
+    .project-card:hover {
+        transform: none;
+    }
+}

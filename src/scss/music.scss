@@ -1,0 +1,673 @@
+@use 'sass:color';
+@use 'variables' as var;
+@use 'index';
+
+html {
+    overflow-x: hidden;
+    /* Prevents horizontal scroll */
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar {
+        display: none;
+    }
+}
+
+.music-layout {
+    height: 90vh;
+    width: 96vw;
+    max-width: 2560px;
+    margin-top: 5vh;
+    gap: 2vw;
+    align-items: flex-start;
+    /* Aligns items to the top */
+    justify-content: center;
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+    flex-direction: row;
+}
+
+.marquee-column {
+    width: 16vw;
+    height: 100%;
+    padding: 1.5rem;
+}
+
+.marquee-mask {
+    flex: 1;
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
+    /* Allow manual scrolling */
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar {
+        display: none;
+    }
+
+    position: relative;
+    display: flex;
+    /* Stack children */
+    flex-direction: column;
+    gap: 10px;
+    /* Space between the two lists matches item gap */
+    mask-image: linear-gradient(to bottom, transparent, var.$dark-color 1.5rem, var.$dark-color calc(100% - 1.5rem), transparent);
+    -webkit-mask-image: linear-gradient(to bottom, transparent, var.$dark-color 1.5rem, var.$dark-color calc(100% - 1.5rem), transparent);
+}
+
+.marquee-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* Center images */
+    gap: 10px;
+
+    .marquee-item {
+        position: relative;
+        width: 90%;
+        transition: scale 0.3s ease-in-out;
+
+        img {
+            @include index.acrylic;
+            aspect-ratio: 1/1;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            cursor: pointer;
+        }
+
+        .image-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to top, color.change(var.$dark-color, $alpha: 0.8), color.change(var.$dark-color, $alpha: 0.2));
+            backdrop-filter: blur(2px);
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: var.$light-color;
+            border-radius: 12px;
+            /* Matches acrylic border radius */
+            pointer-events: none;
+            z-index: 3;
+            padding: 1rem;
+
+            .overlay-artist {
+                font-weight: bold;
+                font-size: 1.1rem;
+                margin-bottom: 0.2rem;
+            }
+
+            .overlay-date {
+                font-family: "Lucida Handwriting", cursive;
+                font-size: 0.9rem;
+                font-style: italic;
+                opacity: 0.8;
+            }
+        }
+
+        &:hover {
+            scale: 1.1;
+            z-index: 10;
+            /* Ensure it pops over neighbors if needed */
+
+            .image-overlay {
+                opacity: 1;
+            }
+        }
+
+        &:active {
+            transition: scale 0.1s ease-out;
+            scale: 1.05;
+        }
+    }
+}
+
+/* Expanding image styles */
+.lightbox-backdrop {
+    @include index.acrylic;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    border-radius: 0;
+    border: none;
+    box-shadow: none;
+    z-index: 15;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+    pointer-events: none;
+
+    &::before {
+        display: none;
+    }
+
+    &.active {
+        opacity: 1;
+        pointer-events: auto;
+    }
+}
+
+.marquee-item-clone {
+    @include index.acrylic;
+    position: fixed;
+    z-index: 20;
+    transition: all 0.5s ease-in-out;
+    overflow: hidden;
+    transform-origin: center;
+
+    img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    // Image overlay for caption
+    .image-overlay {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        padding: 2rem;
+        background: linear-gradient(to top, color.change(var.$dark-color, $alpha: 0.9), transparent);
+        color: var.$light-color;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        opacity: 0;
+        transition: opacity 0.5s ease-in-out;
+
+        .overlay-artist {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .overlay-date {
+            font-family: "Lucida Handwriting", cursive;
+            font-size: 1.2rem;
+            opacity: 0.8;
+        }
+    }
+
+    &.expanded {
+        .image-overlay {
+            opacity: 1;
+        }
+    }
+
+    &:hover {
+        scale: 1.05;
+        cursor: pointer;
+    }
+
+    &:active {
+        transition: scale 0.1s ease-out;
+        scale: 1;
+    }
+}
+
+/* Tableau dashboard styles */
+/* Center column styles */
+.center-column {
+    flex: 1;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    min-width: 0;
+}
+
+/* Tableau dashboard styles */
+.viz-container {
+    flex: 1; // Grows to fill remaining space
+    display: flex;
+    flex-direction: column;
+    height: 0; // Force container to ignore content height and fill flex space
+    overflow: hidden;
+    position: relative;
+    border-radius: 20px;
+}
+
+tableau-viz,
+#tableauViz {
+    display: block;
+    width: 100%;
+    height: 100%;
+    border-radius: 20px;
+}
+
+.last-played-container {
+    @include index.acrylic;
+    width: 100%;
+    height: 60px;
+    /* Slightly increased to fit content nicely */
+    padding: 0 1.5rem;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    /* Centers the content globally */
+    position: relative;
+    flex-shrink: 0;
+
+    .last-played-label {
+        position: absolute;
+        left: 1.5rem;
+        top: 50%;
+        transform: translateY(-50%);
+        color: color-mix(in srgb, var(--color1, var.$light-color), var.$light-color 50%);
+        font-size: 0.85rem;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        opacity: 0.7;
+        font-weight: 600;
+        white-space: nowrap;
+        text-decoration: none;
+        z-index: 10;
+        /* Ensure it stays above scrolling text */
+        transition: opacity 0.5s ease-in-out, color 0.5s ease-in-out, transform 0.2s ease;
+
+        cursor: pointer;
+
+        &:hover {
+            opacity: 1;
+        }
+    }
+
+    .last-fm-content {
+        flex: 1;
+        position: relative;
+        height: 100%;
+        overflow: hidden;
+
+        /* Container for the sliding/fading track info */
+        .track-info-container {
+            display: flex;
+            align-items: center;
+            /* Flex layout for conditional centering */
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            transition: opacity 0.5s ease-in-out;
+            opacity: 0;
+            pointer-events: none;
+
+            /* Left Spacer (Safety Zone) */
+            &::before {
+                content: '';
+                flex: 1;
+                min-width: 12rem;
+                /* Ensure label is cleared */
+            }
+
+            /* Right Spacer (Balance) */
+            &::after {
+                content: '';
+                flex: 1;
+                min-width: 1.5rem;
+                /* Min container padding */
+            }
+
+            .content-wrapper {
+                display: flex;
+                align-items: center;
+                gap: 1rem;
+                flex: 0 1 auto;
+                /* Allow shrinking so marquee triggers */
+                min-width: 0;
+                /* meaningful for flex items to shrink */
+                overflow: hidden;
+                /* Ensure this constrains the inner info */
+                margin-right: 1.5rem;
+                /* Ensure right padding visual eq via margin if flex spacer collapses? No spacer handles min-width. */
+                /* Actually spacer min-width handles padding. */
+            }
+
+            &.active {
+                opacity: 1;
+                pointer-events: auto;
+                z-index: 2;
+            }
+        }
+
+        img.last-fm-art {
+            height: 40px;
+            width: 40px;
+            border-radius: 4px;
+            object-fit: cover;
+            display: none;
+            /* Hidden until loaded */
+
+            &.loaded {
+                display: block;
+            }
+        }
+
+        .last-fm-info {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            min-width: 0;
+            color: var.$light-color;
+            font-size: 1rem;
+            white-space: nowrap;
+            overflow: hidden;
+            /* Mask for fade effect on sides during marquee - applied via JS class if needed */
+            /* mask-image: linear-gradient(to right, transparent, black 1rem, black calc(100% - 1rem), transparent); */
+            /* -webkit-mask-image: linear-gradient(to right, transparent, black 1rem, black calc(100% - 1rem), transparent); */
+
+            &.mask-active {
+                /* Default static state: Solid left, Faded right */
+                mask-image: linear-gradient(to right, var.$dark-color 0, var.$dark-color 1rem, var.$dark-color calc(100% - 1rem), transparent);
+                -webkit-mask-image: linear-gradient(to right, var.$dark-color 0, var.$dark-color 1rem, var.$dark-color calc(100% - 1rem), transparent);
+            }
+
+            /* Prepare for marquee wrapper */
+            .marquee-wrapper {
+                display: flex;
+                align-items: center;
+                gap: 4rem;
+                /* Gap between loops */
+                width: max-content;
+                will-change: transform;
+            }
+
+            /* Regular content (when not marquee) */
+            .separator,
+            .track-name,
+            .artist-name {
+                display: inline-block;
+            }
+
+            .separator {
+                opacity: 0.5;
+            }
+
+            .track-name {
+                font-weight: 700;
+            }
+
+            .artist-name {
+                font-weight: 400;
+                opacity: 0.9;
+            }
+        }
+    }
+}
+
+/* Concert column styles */
+.concert-column {
+    width: 16vw;
+    height: 100%;
+    max-width: fit-content;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+
+    h3 {
+        text-align: center;
+        margin-bottom: 1.5rem;
+        border-bottom: 1px solid color.change(var.$light-color, $alpha: 0.2);
+        padding-bottom: 0.5rem;
+        font-size: clamp(1.5rem, 2vw, 1.8rem);
+        white-space: nowrap;
+        width: 100%;
+        overflow: hidden;
+    }
+
+    &:hover {
+        .concerts-content {
+            scrollbar-color: color.change(var.$light-color, $alpha: 0.2) transparent;
+        }
+
+        .concerts-content::-webkit-scrollbar-thumb {
+            background: color.change(var.$light-color, $alpha: 0.2);
+        }
+    }
+
+    .concerts-content {
+        flex: 1;
+        overflow-y: auto;
+        padding-left: 1rem;
+        /* Space for scrollbar */
+        direction: rtl;
+        /* Moves scrollbar to left */
+
+        /* Firefox Support */
+        scrollbar-color: transparent transparent;
+
+        /* WebKit Support */
+        &::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        &::-webkit-scrollbar-thumb {
+            background: transparent;
+            border-radius: 10px;
+        }
+    }
+
+    .concert-year-group {
+        direction: ltr;
+        /* Restore text direction */
+        margin-bottom: 2rem;
+
+        &:last-child {
+            margin-bottom: 0;
+        }
+
+        .year-heading {
+            font-size: 1rem;
+            color: color.change(var.$light-color, $alpha: 0.5);
+            font-weight: bold;
+            letter-spacing: 0.1em;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+
+            &::after {
+                content: '';
+                flex: 1;
+                height: 1px;
+                background: color.change(var.$light-color, $alpha: 0.1);
+            }
+        }
+    }
+
+    .concert-list {
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        gap: 1.25rem;
+
+        li {
+            display: flex;
+            flex-direction: column;
+            gap: 0.1rem;
+
+            .artist {
+                font-size: 1.1rem;
+                font-weight: 600;
+                color: var.$light-color;
+            }
+
+            .tour {
+                font-size: 0.9rem;
+                opacity: 0.7;
+                font-style: italic;
+                color: color.adjust(var.$light-color, $lightness: -10%);
+            }
+        }
+    }
+}
+
+/* Overrides for dynamic color */
+.acrylic,
+.marquee-item img,
+.marquee-item-clone,
+.last-played-container {
+    border-color: color-mix(in srgb, var(--color1, var.$light-color), transparent 70%);
+    box-shadow:
+        0 8px 32px color.change(var.$dark-color, $alpha: 0.1),
+        inset 0 1px 0 color-mix(in srgb, var(--color1, var.$light-color), transparent 50%),
+        inset 0 -1px 0 color-mix(in srgb, var(--color1, var.$light-color), transparent 90%),
+        inset 0 0 8px 4px color-mix(in srgb, var(--color1, var.$light-color), transparent 60%);
+
+    &::before {
+        background: linear-gradient(90deg,
+                transparent,
+                color-mix(in srgb, var(--color1, var.$light-color), transparent 20%),
+                transparent);
+    }
+}
+
+/* Responsive adjustment */
+@media (max-width: 1024px) {
+    .music-layout {
+        flex-direction: column;
+        width: 95vw;
+        gap: 1rem;
+        padding-bottom: 100px;
+        height: auto;
+        justify-content: flex-start;
+        align-items: center;
+    }
+
+    .center-column {
+        width: 100%;
+        height: auto;
+        order: 1;
+        display: flex;
+    }
+
+    .viz-container {
+        width: 100%;
+        height: 80vh !important;
+        min-height: 80vh;
+        position: relative;
+        border-radius: 20px;
+
+        /* Remove acrylic effect */
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+        border: none;
+        box-shadow: none;
+        background: transparent;
+
+        &::before {
+            display: none;
+        }
+    }
+
+    tableau-viz,
+    #tableauViz {
+        border-radius: 20px;
+        width: 100% !important;
+        height: 100% !important;
+        display: block;
+    }
+
+    .concert-column {
+        order: 2;
+        width: 50vw;
+        min-width: fit-content;
+        max-width: none;
+        height: 50vh;
+        text-align: center;
+        justify-content: center;
+
+        .concert-list li {
+            .artist {
+                font-size: 1.3rem;
+            }
+
+            .tour {
+                font-size: 1.0rem;
+            }
+        }
+    }
+
+    .marquee-column {
+        display: block;
+        order: 3;
+        width: 95vw;
+        height: 200px;
+    }
+
+    .marquee-mask {
+        flex-direction: row;
+        mask-image: linear-gradient(to right, transparent, var.$dark-color 1.5rem, var.$dark-color calc(100% - 1.5rem), transparent);
+        -webkit-mask-image: linear-gradient(to right, transparent, var.$dark-color 1.5rem, var.$dark-color calc(100% - 1.5rem), transparent);
+        overflow-x: scroll;
+        overflow-y: hidden;
+    }
+
+    .marquee-content {
+        flex-direction: row;
+        width: max-content;
+        height: 100%;
+        align-items: center;
+
+        .marquee-item {
+            height: 90%;
+            width: auto;
+            aspect-ratio: 1/1;
+            flex-shrink: 0;
+            user-select: none;
+            /* Prevent accidental selection during swipe */
+        }
+    }
+
+    .last-played-container {
+        position: fixed;
+        bottom: 10px;
+        width: 95%;
+        height: 60px;
+        z-index: 11;
+
+        /* Ensure background is opaque enough */
+        background-color: color.change(var.$dark-color, $alpha: 0.8);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+
+        /* Layout adjustments for mobile */
+        padding: 0 1rem;
+        justify-content: flex-start;
+
+        .last-played-label {
+            position: relative;
+            left: auto;
+            top: auto;
+            transform: none;
+            margin-right: 1rem;
+            flex-shrink: 0;
+        }
+
+        .last-fm-content {
+            .track-info-container {
+
+                &::before,
+                &::after {
+                    display: none;
+                }
+
+                .content-wrapper {
+                    margin-right: 0;
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,237 @@
+@use 'sass:color';
+@use 'variables' as var;
+@use 'index';
+
+#timeline-page {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    overflow-y: auto; /* Make the whole page scrollable */
+    flex-direction: column;
+
+    /* Custom scrollbar for webkit browsers */
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+
+    &::-webkit-scrollbar {
+        display: none;
+    }
+}
+
+#timeline-body {
+    flex-grow: 1;
+    position: relative;
+    overflow: visible;
+}
+
+.timeline-spine {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    width: 8rem;
+    z-index: 1;
+    transform: translateX(-50%);
+    background: 
+        linear-gradient(color.change(var.$light-color, $alpha: 0.9), color.change(var.$light-color, $alpha: 0.1)) 
+        no-repeat center/2px 100%;
+}
+
+.timeline-year-marker {
+    position: absolute; 
+    backdrop-filter: blur(4px);
+    line-height: 1.5rem; /* This is used for the vertical centering calculation */
+    left: 50%;
+    width: 100px;
+    transform: translateX(-50%);
+    text-align: center;
+    font-size: 0.9rem;
+    color: color.change(var.$light-color, $alpha: 0.5);
+    pointer-events: none;
+    z-index: 2;
+}
+
+.timeline-year-marker::before,
+.timeline-year-marker::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    width: 16px;
+    height: 2px;
+    background-color: color.change(var.$light-color, $alpha: 0.4);
+    z-index: 1;
+}
+.timeline-year-marker::before { left: 0; }
+.timeline-year-marker::after { right: 0; }
+
+.timeline-event {
+    @extend %button;
+
+    position: absolute;
+    width: 33%;
+    max-width: 700px;
+    z-index: 3;
+    transform-origin: center;
+    transition: transform 0.2s ease-in-out, top 0.5s ease-in-out, background-color 0.2s ease-in-out; 
+}
+
+.timeline-event:hover {
+    transform: scale(1.05);
+    scale: 1 !important;
+}
+
+.timeline-event:active {
+    transform: scale(1);
+    scale: 1 !important;
+}
+
+.timeline-event.education { 
+    right: calc(50% + 96px);
+}
+
+.timeline-event.work {
+    left: calc(50% + 96px);
+}
+
+.event-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.event-logo {
+    width: 36px;
+    height: 36px;
+    border-radius: 6px;
+    object-fit: contain;
+    flex-shrink: 0;
+}
+
+.event-title-group h3 {
+    margin: 0;
+    font-size: 1.2rem;
+    color: var.$light-color;
+}
+
+.event-place {
+    padding: 0.1rem 0 0;
+    font-size: 1.1rem;
+    color: var.$light-color;
+}
+
+.expandable-content {
+    max-height: 0;  // Gets changed in JS
+    overflow: hidden;
+    transition: max-height 0.5s ease-in-out;
+}
+
+.event-date-expanded {
+    font-style: italic;
+    font-size: 1rem;
+    color: color.change(var.$light-color, $alpha: 0.7);
+    margin: 0.5rem 0;
+}
+
+.timeline-event-details {
+    padding-top: 0.75rem;
+    border-top: 1px solid color.change(var.$light-color, $alpha: 0.2);
+}
+
+.timeline-event-details p {
+    color: color.change(var.$light-color, $alpha: 0.8);
+    font-size: 1rem;
+    line-height: 1.4;
+}
+
+.event-images-container {
+    display: flex;
+    width: 100%;
+    gap: 10px; /* Adjust the gap as needed */
+    padding-top: 0.5rem;
+    align-items: flex-start;
+    box-sizing: border-box;
+}
+
+.event-images-container img {
+    /* Set width to 0 and let flex-grow control the size */
+    width: 0;
+    height: auto;
+    border-radius: 0.5rem;
+    border: 1px solid color.change(var.$light-color, $alpha: 0.1);
+}
+
+.duration-bar {
+    position: absolute;
+    width: 6px;
+    border-radius: 3px;
+    z-index: 3;
+    transition: all 0.2s ease-in-out;
+}
+
+.duration-bar.education {
+    background-color: #42a5f5;
+    left: calc(50% - 1.5rem - 3px);
+}
+
+.duration-bar.work {
+    background-color: #66bb6a;
+    left: calc(50% + 1.5rem - 3px);
+}
+
+.duration-bar.highlighted {
+    transform: scaleX(1.5);
+}
+
+.duration-bar.education.highlighted {
+    box-shadow: 0 0 8px 2px #42a5f5;
+}
+
+.duration-bar.work.highlighted {
+    box-shadow: 0 0 8px 2px #66bb6a;
+}
+
+/* --- Responsive Styles for smaller screens --- */
+@media (width <= #{var.$mobile-width}) {
+    .header h1 {
+        font-size: 3rem;
+    }
+
+    .timeline-spine {
+        left: auto;
+        right: 0;
+        transform: none;
+    }
+
+    .timeline-year-marker {
+        left: auto;
+        right: -25px;
+        width: 100px;
+        transform: none;
+        text-align: left;
+    }
+
+    .timeline-year-marker::before,
+    .timeline-year-marker::after {
+        display: none;
+    }
+
+    .timeline-event {
+        width: calc(100% - 195px); /* Adjust width for mobile */
+        min-width: 0; /* Reset min-width for mobile */
+        left: auto !important;
+        right: 160px !important;
+    }
+
+    .duration-bar {
+        left: auto !important;
+    }
+
+    .duration-bar.education {
+        right: 85px;
+    }
+    
+    .duration-bar.work {
+        right: 100px;
+    }
+}

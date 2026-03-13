@@ -1,0 +1,181 @@
+@use 'sass:color';
+@use 'variables' as var;
+@use './fontawesome/variables' with ($font-path: '../../webfonts');
+@use './fontawesome/fontawesome';
+@use './fontawesome/fa' as fa;
+@use './fontawesome/solid' as fas;
+@use './fontawesome/brands' as fab;
+
+@for $i from 1 through 3 {
+    @property --color#{$i} {
+        syntax: '<color>';
+        inherits: true;
+        initial-value: color.change(var.$light-color, $alpha: 0.5);
+    }
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    font-family: var.$font;
+    text-wrap: pretty;
+    background-color: var.$dark-color;
+}
+
+body {
+    z-index: 1;
+    color: var.$light-color;
+}
+
+h1 {
+    font-size: clamp(2.5rem, 10vmin, 7em);
+}
+
+h2 {
+    font-size: clamp(2rem, 6vmin, 4em);
+}
+
+h3 {
+    margin-bottom: 0.5vh;
+    font-size: clamp(1.5rem, 4vmin, 3em);
+}
+
+#background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100dvw;
+    height: 100dvh;
+    z-index: -1;
+    /* Canvas will fill this */
+}
+
+.header {
+    font-size: 0.5rem;
+    padding: 2rem 1rem 1rem;
+    margin: 0 0 1rem 0;
+    text-align: center;
+    width: 100%;
+    border-bottom: 1px solid color.change(var.$light-color, $alpha: 0.3);
+    backdrop-filter: blur(8px);
+
+    h1 {
+        background: linear-gradient(to bottom,
+                var.$light-color 20%,
+                color.adjust(var.$light-color, $lightness: -25%) 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        display: inline-block;
+        /* Required for background-clip: text in some cases */
+        letter-spacing: -0.02em;
+    }
+}
+
+.center {
+    min-height: 100dvh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+@mixin acrylic {
+    height: fit-content;
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    box-shadow:
+        0 8px 32px color.change(var.$dark-color, $alpha: 0.1),
+        inset 0 1px 0 color.change(var.$light-color, $alpha: 0.7),
+        inset 0 -1px 0 color.change(var.$light-color, $alpha: 0.1),
+        inset 0 0 8px 4px color.change(var.$light-color, $alpha: 0.4);
+    position: relative;
+    z-index: 2;
+    transform: translateZ(0);
+}
+
+%button {
+    @include acrylic;
+
+    color: inherit;
+    text-decoration: none;
+    padding: 1rem;
+    background-color: color.change(var.$light-color, $alpha: 0.1);
+    transition: scale 0.2s ease-in-out, background-color 0.2s ease-in-out;
+    cursor: pointer;
+}
+
+%button:hover {
+    background-color: color.change(var.$light-color, $alpha: 0.2);
+    scale: 1.15;
+}
+
+%button:active {
+    scale: 1.05;
+}
+
+.acrylic {
+    @include acrylic;
+}
+
+.button {
+    @extend %button;
+}
+
+.list {
+    display: flex;
+    text-align: center;
+    flex-direction: column;
+    row-gap: clamp(1em, 2vh, 2em);
+    overflow: auto;
+    padding: clamp(2rem, 5vmin, 6rem);
+}
+
+.justified-container a {
+    display: block;
+    font-size: clamp(1.5rem, 5vmin, 3em);
+    margin: 0 auto clamp(20px, 5vh, 60px);
+    text-align-last: justify;
+}
+
+.media-icons {
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    margin: 0 auto;
+    color: color.adjust(var.$light-color, $lightness: -16%); // Darken icons
+}
+
+.media-icons a {
+    color: inherit;
+    text-decoration: none;
+    transition: scale 0.2s ease-in-out, color 0.5s ease;
+}
+
+.media-icons a:hover {
+    scale: 1.2;
+}
+
+.media-icons a.fa-envelope:hover {
+    color: #fbbc04;
+}
+
+.media-icons a.fa-linkedin:hover {
+    color: #0b66c3;
+}
+
+.media-icons a.fa-github:hover {
+    color: #fafbfc;
+}
+
+.media-icons a.fa-youtube:hover {
+    color: #F03;
+}
+
+.media-icons a.fa-bluesky:hover {
+    color: #1185fe;
+}

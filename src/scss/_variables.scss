@@ -1,0 +1,8 @@
+@use "sass:color";
+
+$font: 'Raleway', sans-serif;
+$dark-color: oklch(21.779% 0.00002 271.152);
+$light-color: oklch(84.522% 0 271.152deg);
+$dark-color-rgb: #{color.channel($dark-color, "lightness")} #{color.channel($dark-color, "chroma")} #{color.channel($dark-color, "hue")};
+$light-color-rgb: #{color.channel($light-color, "lightness")} #{color.channel($light-color, "chroma")} #{color.channel($light-color, "hue")};
+$mobile-width: 768px;
