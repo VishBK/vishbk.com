@@ -244,6 +244,101 @@ tableau-viz,
     width: 100%;
     height: 100%;
     border-radius: 20px;
+    overflow: hidden;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+
+    &.loaded {
+        opacity: 1;
+    }
+}
+
+.skeleton-loader {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    box-sizing: border-box;
+    transition: opacity 0.5s ease-in-out;
+    pointer-events: none;
+    z-index: 10;
+    overflow: hidden;
+    border-radius: 20px;
+
+    &::before {
+        content: '';
+        position: absolute;
+        top: 24px;
+        left: 24px;
+        right: 24px;
+        bottom: 24px;
+        $skeleton: color.change(var.$light-color, $alpha: 0.15);
+        $sweep: color.change(var.$light-color, $alpha: 0.4);
+
+        // The background sweeps the highlight over a solid block color
+        background-color: $skeleton;
+        background-image: linear-gradient(90deg, transparent, $sweep 50%, transparent 100%);
+        background-size: 50vw 100%;
+        background-position: -50vw 0;
+        background-repeat: no-repeat;
+        animation: dashboardSweep 1.5s ease-in-out infinite;
+
+        // The mask essentially stencils out the dashboard shapes
+        // so the background and sweep only show up inside the 5 panes!
+        mask-image:
+            linear-gradient(black 100%, transparent 0),
+            linear-gradient(black 100%, transparent 0),
+            radial-gradient(circle closest-side, black 99%, transparent 0),
+            linear-gradient(black 100%, transparent 0),
+            linear-gradient(black 100%, transparent 0);
+
+        mask-repeat: no-repeat;
+
+        // Desktop Layout (5 panes roughly matching Tableau view)
+        mask-size:
+            32% 46%,
+            32% 46%,
+            24% 34%, // Circle smaller on desktop
+            56% 51%,
+            42% 51%;
+
+        mask-position:
+            0% 0%,
+            50% 0%,
+            95% 9%, // Centered perfectly in the top right pane
+            0% 100%,
+            100% 100%;
+
+        @media (max-width: 1024px) {
+            // Mobile Layout (stacked blocks)
+            mask-size:
+                100% 15%,
+                100% 15%,
+                100% 25%, // Circle bigger on mobile
+                100% 15%,
+                100% 15%;
+
+            mask-position:
+                0% 0%,
+                0% 20%,
+                0% 50%,
+                0% 80%,
+                0% 100%;
+        }
+    }
+}
+
+tableau-viz.loaded~.skeleton-loader,
+#tableauViz.loaded~.skeleton-loader {
+    opacity: 0;
+}
+
+@keyframes dashboardSweep {
+    to {
+        background-position: 100vw 0;
+    }
 }
 
 .last-played-container {
@@ -554,8 +649,9 @@ tableau-viz,
     }
 
     .viz-container {
+        flex: none; // Override desktop flex: 1 / height: 0
         width: 100%;
-        height: 80vh !important;
+        height: 80vh;
         min-height: 80vh;
         position: relative;
         border-radius: 20px;
@@ -578,6 +674,7 @@ tableau-viz,
         width: 100% !important;
         height: 100% !important;
         display: block;
+        overflow: hidden;
     }
 
     .concert-column {

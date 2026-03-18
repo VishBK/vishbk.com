@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -15,6 +16,7 @@
     <script src="src/scripts/music.js" type="module"></script>
     <script type="module" src="https://public.tableau.com/javascripts/api/tableau.embedding.3.latest.min.js"></script>
 </head>
+
 <body>
     <div id="background"></div>
     <div class="music-layout">
@@ -27,9 +29,9 @@
         </div>
         <div class="center-column">
             <div class="acrylic viz-container">
-                <tableau-viz id="tableauViz" 
-                    src="https://public.tableau.com/views/MusicData_15666258552190/Overview">
+                <tableau-viz id="tableauViz" src="https://public.tableau.com/views/MusicData_15666258552190/Overview">
                 </tableau-viz>
+                <div class="skeleton-loader"></div>
             </div>
             <div class="acrylic last-played-container">
                 <a href="https://last.fm/user/vishbk" target="_blank" class="last-played-label">Last played</a>
@@ -37,7 +39,9 @@
                     <!-- Two containers for cross-fading -->
                     <div id="track-current" class="track-info-container active">
                         <div class="content-wrapper">
-                            <img class="last-fm-art" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="Album Art">
+                            <img class="last-fm-art"
+                                src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
+                                alt="Album Art">
                             <div class="last-fm-info">
                                 <span class="track-name"></span>
                                 <span class="separator"></span>
@@ -47,7 +51,9 @@
                     </div>
                     <div id="track-next" class="track-info-container">
                         <div class="content-wrapper">
-                            <img class="last-fm-art" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="Album Art">
+                            <img class="last-fm-art"
+                                src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
+                                alt="Album Art">
                             <div class="last-fm-info">
                                 <span class="track-name"></span>
                                 <span class="separator"></span>
@@ -155,7 +161,7 @@
                 </div>
                 <div class="concert-year-group">
                     <h4 class="year-heading">2021</h4>
-                    <ul class="concert-list">                          
+                    <ul class="concert-list">
                         <li>
                             <span class="artist">JPEGMAFIA</span>
                             <span class="tour">LP! Tour</span>
@@ -171,4 +177,5 @@
     </div>
     <div class="lightbox-backdrop"></div>
 </body>
+
 </html>

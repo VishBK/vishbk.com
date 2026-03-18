@@ -217,33 +217,54 @@ function checkMarquee(container) {
 
 const tableauViz = document.getElementById('tableauViz');
 const vizContainer = document.querySelector('.viz-container');
-let resizeTimeout;
 
-window.addEventListener('resize', () => {
-    if (!tableauViz || !vizContainer) return;
+if (tableauViz) {
+    // Set device type based on initial width
+    const updateDeviceType = () => {
+        const isMobile = window.innerWidth <= RESPONSIVE_WIDTH;
+        if (isMobile) {
+            tableauViz.device = 'phone';
+        } else {
+            tableauViz.device = 'desktop';
+        }
+    };
 
-    // 1. Smoothly fit the container during the drag
-    if (typeof tableauViz.resize === 'function') {
-        tableauViz.resize();
-    }
+    updateDeviceType();
 
-    // 2. Clear previous timeout to debounce the heavy work
-    clearTimeout(resizeTimeout);
-    resizeTimeout = setTimeout(() => {
-        // Use requestAnimationFrame to ensure the CSS layout pass has finished
-        requestAnimationFrame(() => {
-            // Explicitly sync the height attribute to force Tableau to re-measure
-            const containerHeight = vizContainer.clientHeight;
-            tableauViz.setAttribute('height', containerHeight + 'px');
-
-            if (typeof tableauViz.refresh === 'function') {
-                tableauViz.refresh();
-            } else {
-                tableauViz.src = tableauViz.src;
+    // Disable/enable scrollbars on the Tableau iframe once the viz loads
+    tableauViz.addEventListener('firstinteractive', () => {
+        const iframe = (tableauViz.shadowRoot || tableauViz).querySelector('iframe');
+        const isMobile = window.innerWidth <= RESPONSIVE_WIDTH;
+        if (isMobile) {
+            if (iframe) iframe.setAttribute('scrolling', 'yes');
+        } else {
+            if (iframe) {
+                iframe.setAttribute('scrolling', 'no');
             }
-        });
-    }, 200);
-});
+        }
+        
+        // Reveal the dashboard once it's loaded and scrollbars are removed
+        tableauViz.classList.add('loaded');
+    });
+
+    // Update device type on resize
+    let resizeTimeout;
+    window.addEventListener('resize', () => {
+        clearTimeout(resizeTimeout);
+        resizeTimeout = setTimeout(() => {
+            // Use requestAnimationFrame to ensure the CSS layout pass has finished
+            requestAnimationFrame(() => {
+                updateDeviceType();
+                const containerHeight = vizContainer.clientHeight;
+                tableauViz.setAttribute('height', containerHeight + 'px');
+                
+                // Hide dashboard during re-render to avoid scrollbar flashes
+                tableauViz.classList.remove('loaded');
+                tableauViz.src = tableauViz.src;
+            });
+        }, 200);
+    });
+}
 
 const marqueeOriginal = document.getElementById('marquee-original');
 const marqueeDuplicate = document.getElementById('marquee-duplicate');
