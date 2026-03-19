@@ -154,9 +154,11 @@ html {
     }
 
     // --- State Interactions (Hover/Active) ---
-    &:hover .card-content {
-        background-color: rgb(var(--card-bg-color), 85%);
-        transform: scale(1.05); // Works in expanded state too
+    @media (hover: hover) {
+        &:hover .card-content {
+            background-color: rgb(var(--card-bg-color), 85%);
+            transform: scale(1.05); // Works in expanded state too
+        }
     }
 
     &:active:not(:has(.prev:hover, .next:hover)) .card-content {
@@ -245,9 +247,12 @@ html {
     visibility: hidden;
 }
 
-.project-card.expanded .prev:hover,
-.project-card.expanded .next:hover {
-    background-color: rgb(var(--card-bg-color), 1);
+@media (hover: hover) {
+
+    .project-card.expanded .prev:hover,
+    .project-card.expanded .next:hover {
+        background-color: rgb(var(--card-bg-color), 1);
+    }
 }
 
 /* --- Project Detail Styles --- */
@@ -353,7 +358,12 @@ html {
     display: block;
     border-radius: 0.5rem;
     border: 1px solid oklch(var(--card-text-rgb) / 10%);
-    transition: transform 0.5s ease-in-out;
+    opacity: 0;
+    transition: transform 0.5s ease-in-out, opacity 1s ease-in-out;
+
+    &.loaded {
+        opacity: 1;
+    }
 }
 
 .media-icons {
@@ -386,10 +396,12 @@ svg {
     }
 }
 
-&:hover svg {
-    @each $index, $color in $tableau-colors {
-        path:nth-child(#{$index}) {
-            fill: $color;
+@media (hover: hover) {
+    &:hover svg {
+        @each $index, $color in $tableau-colors {
+            path:nth-child(#{$index}) {
+                fill: $color;
+            }
         }
     }
 }

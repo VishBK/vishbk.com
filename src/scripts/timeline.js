@@ -121,6 +121,7 @@ class Timeline {
      * This is the main entry point after the class is instantiated.
      */
     init() {
+        this.container.classList.add('is-loading');
         this._initDOM(); // Build the initial HTML structure
         this._addEventListeners();  // Set up event listeners for user interaction and responsiveness
     }
@@ -140,10 +141,10 @@ class Timeline {
 
         // Apply image aspect-ratio styling and wait for images to finish loading before measuring.
         this._setAspectRatioFlex().then(() => {
-            // Now that images have been laid out, measure heights reliably.
-            this._storeHeights();
             // Apply initial overlap resolution/positioning.
             this.resolveEventOverlaps();
+            // Remove the loading class after the first layout to enable transitions for interactions.
+            requestAnimationFrame(() => this.container.classList.remove('is-loading'));
         });
     }
 
@@ -167,9 +168,13 @@ class Timeline {
 
         // --- Year Marker Creation ---
         const markers = Array.from(this.container.querySelectorAll('.timeline-year-marker'));
+        let maskStops = ['black 0%'];
+        let sortedYears = [];
+
         for (let year = this.minDate.getFullYear(); year <= this.maxDate.getFullYear(); year++) {
             const yearDate = new Date(year, 0, 1);
             if (yearDate < this.minDate || yearDate > this.maxDate) continue;
+            sortedYears.push(yearDate);
 
             // Find existing marker
             let markerEl = markers.find(m => m.textContent === String(year));
@@ -183,6 +188,21 @@ class Timeline {
             // Update marker position
             const topPosition = ((this.maxDate - yearDate) / totalDuration) * this.effectiveHeight;
             markerEl.style.top = `calc(${topPosition}px - 0.75rem)`; // Center vertically
+        }
+
+        sortedYears.sort((a, b) => b - a);
+        for (const yearDate of sortedYears) {
+            const topPosition = ((this.maxDate - yearDate) / totalDuration) * this.effectiveHeight;
+            maskStops.push(`black calc(${topPosition}px - 14px)`);
+            maskStops.push(`transparent calc(${topPosition}px - 14px)`);
+            maskStops.push(`transparent calc(${topPosition}px + 14px)`);
+            maskStops.push(`black calc(${topPosition}px + 14px)`);
+        }
+        maskStops.push('black 100%');
+        const maskGradient = `linear-gradient(to bottom, ${maskStops.join(', ')})`;
+
+        if (spineEl) {
+            spineEl.style.setProperty('--line-mask', maskGradient);
         }
 
         return spineFragment;
@@ -313,46 +333,17 @@ class Timeline {
     }
 
     /**
-     * Pre-calculates and caches the `collapsed` and `expanded` height for each event element.
-     * @private
-     */
-    _storeHeights() {
-        let allEvents = this.container.querySelectorAll('.timeline-event');
-        allEvents.forEach(event => {
-            const header = event.querySelector('.event-header');
-            const content = event.querySelector('.expandable-content');
-
-            // Use getComputedStyle to reliably get the padding of the main event element.
-            const style = window.getComputedStyle(event);
-            const paddingTop = parseFloat(style.paddingTop);
-            const paddingBottom = parseFloat(style.paddingBottom);
-            const verticalPadding = paddingTop + paddingBottom;
-
-            // Calculate the collapsed height: header + parent's vertical padding.
-            // header.offsetHeight is reliable here as it's not transitioning.
-            const collapsedHeight = header.offsetHeight + verticalPadding;
-
-            // Calculate the expanded height: header + full content + parent's vertical padding.
-            // content.scrollHeight gives the full height of the content, even if hidden.
-            const expandedHeight = header.offsetHeight + content.scrollHeight + verticalPadding;
-
-            // Store both values for later use.
-            event.dataset.collapsedHeight = collapsedHeight;
-            event.dataset.expandedHeight = expandedHeight;
-        });
-    }
-
-    /**
      * Handles the full layout update cycle on window resize.
      */
     updateLayout() {
+        this.container.classList.add('is-resizing');
         // Recalculate all event positions after a resize
         this.effectiveHeight = Math.max(this.minTimelineHeight, this.container.clientHeight);
         this._createTimelineSpine();
         this._createDurationBars();
         this._createEventElements();
-        this._storeHeights();
         this.resolveEventOverlaps();
+        requestAnimationFrame(() => this.container.classList.remove('is-resizing'));
     }
 
     /**
@@ -365,8 +356,18 @@ class Timeline {
         let columnTops = { left: 0, right: 0 }; // Tracks the bottom-most Y-coordinate for each column to stack events correctly
 
         allEvents.forEach(event => {
-            // Trigger the visual CSS transition by setting the maxHeight property.
             const timelineContent = event.querySelector('.expandable-content');
+            const header = event.querySelector('.event-header');
+
+            // Dynamically measure heights to guarantee precision
+            const style = window.getComputedStyle(event);
+            const verticalPadding = parseFloat(style.paddingTop) + parseFloat(style.paddingBottom);
+
+            // scrollHeight gives the full unclipped height of the content natively
+            const trueExpandedHeight = header.offsetHeight + timelineContent.scrollHeight + verticalPadding;
+            const trueCollapsedHeight = header.offsetHeight + verticalPadding;
+
+            // Trigger the visual CSS transition by setting the maxHeight property.
             if (event.classList.contains('expanded')) {
                 timelineContent.style.maxHeight = timelineContent.scrollHeight + "px";
             } else {
@@ -379,11 +380,8 @@ class Timeline {
             const newTop = Math.max(columnTops[column], parseFloat(event.dataset.originalTop));
             event.style.top = `${newTop}px`;
 
-            // Retrieve the pre-calculated height from the dataset
             const isExpanded = event.classList.contains('expanded');
-            const currentTotalHeight = isExpanded
-                ? parseFloat(event.dataset.expandedHeight)
-                : parseFloat(event.dataset.collapsedHeight);
+            const currentTotalHeight = isExpanded ? trueExpandedHeight : trueCollapsedHeight;
 
             // Update the column's bottom-most coordinate for the next event in that column
             columnTops[column] = newTop + currentTotalHeight + this.EVENT_GAP;
@@ -432,6 +430,7 @@ class Timeline {
                 // Guard against zero dimensions (broken image)
                 if (img.naturalWidth && img.naturalHeight) {
                     img.style.flexGrow = img.naturalWidth / img.naturalHeight;
+                    img.style.aspectRatio = `${img.naturalWidth} / ${img.naturalHeight}`;
                 } else {
                     img.style.flexGrow = 1;
                 }

@@ -112,6 +112,19 @@ function setDominantColor(card) {
     img.complete ? applyColor() : img.addEventListener("load", applyColor, { once: true });
 }
 
+/* ---------- Progressive Image Loading ---------- */
+function setupImgProgressiveLoad(card) {
+    card.querySelectorAll("img").forEach(img => {
+        const markLoaded = () => img.classList.add("loaded");
+        if (img.complete) {
+            markLoaded();
+        } else {
+            img.addEventListener("load", markLoaded, { once: true });
+            img.addEventListener("error", markLoaded, { once: true });
+        }
+    });
+}
+
 /* ---------- Slideshows ---------- */
 function initSlideshow(container) {
     let index = 0;
@@ -162,6 +175,7 @@ document.addEventListener("DOMContentLoaded", () => {
         card.style.animationDelay = `${-(Math.random() * 20)}s`;
         card.style.animationDuration = `${15 + Math.random() * 10}s`;
         setDominantColor(card);
+        setupImgProgressiveLoad(card);
 
         card.addEventListener("click", () => {
              const isExpanding = !card.classList.contains("expanded");

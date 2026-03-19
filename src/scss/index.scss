@@ -14,6 +14,10 @@
     }
 }
 
+@view-transition {
+    navigation: auto;
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -24,6 +28,7 @@ html {
     font-family: var.$font;
     text-wrap: pretty;
     background-color: var.$dark-color;
+    -webkit-tap-highlight-color: transparent;
 }
 
 body {
@@ -32,16 +37,16 @@ body {
 }
 
 h1 {
-    font-size: clamp(2.5rem, 10vmin, 7em);
+    font-size: clamp(3.5rem, 10vmin, 7rem);
 }
 
 h2 {
-    font-size: clamp(2rem, 6vmin, 4em);
+    font-size: clamp(3rem, 6vmin, 4rem);
 }
 
 h3 {
     margin-bottom: 0.5vh;
-    font-size: clamp(1.5rem, 4vmin, 3em);
+    font-size: clamp(2.5rem, 4vmin, 3rem);
 }
 
 #background {
@@ -109,13 +114,15 @@ h3 {
     cursor: pointer;
 }
 
-%button:hover {
-    background-color: color.change(var.$light-color, $alpha: 0.2);
-    scale: 1.15;
-}
+@media (hover: hover) {
+    %button:hover {
+        background-color: color.change(var.$light-color, $alpha: 0.2);
+        scale: 1.15;
+    }
 
-%button:active {
-    scale: 1.05;
+    %button:active {
+        scale: 1.05;
+    }
 }
 
 .acrylic {
@@ -137,7 +144,7 @@ h3 {
 
 .justified-container a {
     display: block;
-    font-size: clamp(1.5rem, 5vmin, 3em);
+    font-size: clamp(2rem, 5vmin, 3rem);
     margin: 0 auto clamp(20px, 5vh, 60px);
     text-align-last: justify;
 }
@@ -156,26 +163,30 @@ h3 {
     transition: scale 0.2s ease-in-out, color 0.5s ease;
 }
 
-.media-icons a:hover {
-    scale: 1.2;
+@media (hover: hover) {
+    .media-icons a:hover {
+        scale: 1.2;
+    }
 }
 
-.media-icons a.fa-envelope:hover {
-    color: #fbbc04;
-}
+@media (hover: hover) {
+    .media-icons a.fa-envelope:hover {
+        color: #fbbc04;
+    }
 
-.media-icons a.fa-linkedin:hover {
-    color: #0b66c3;
-}
+    .media-icons a.fa-linkedin:hover {
+        color: #0b66c3;
+    }
 
-.media-icons a.fa-github:hover {
-    color: #fafbfc;
-}
+    .media-icons a.fa-github:hover {
+        color: #fafbfc;
+    }
 
-.media-icons a.fa-youtube:hover {
-    color: #F03;
-}
+    .media-icons a.fa-youtube:hover {
+        color: #F03;
+    }
 
-.media-icons a.fa-bluesky:hover {
-    color: #1185fe;
+    .media-icons a.fa-bluesky:hover {
+        color: #1185fe;
+    }
 }

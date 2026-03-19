@@ -114,13 +114,15 @@ html {
             }
         }
 
-        &:hover {
-            scale: 1.1;
-            z-index: 10;
-            /* Ensure it pops over neighbors if needed */
+        @media (hover: hover) {
+            &:hover {
+                scale: 1.1;
+                z-index: 10;
+                /* Ensure it pops over neighbors if needed */
 
-            .image-overlay {
-                opacity: 1;
+                .image-overlay {
+                    opacity: 1;
+                }
             }
         }
 
@@ -205,9 +207,11 @@ html {
         }
     }
 
-    &:hover {
-        scale: 1.05;
-        cursor: pointer;
+    @media (hover: hover) {
+        &:hover {
+            scale: 1.05;
+            cursor: pointer;
+        }
     }
 
     &:active {
@@ -374,8 +378,10 @@ tableau-viz.loaded~.skeleton-loader,
 
         cursor: pointer;
 
-        &:hover {
-            opacity: 1;
+        @media (hover: hover) {
+            &:hover {
+                opacity: 1;
+            }
         }
     }
 

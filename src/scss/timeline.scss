@@ -7,7 +7,8 @@
     width: 100vw;
     height: 100vh;
     display: flex;
-    overflow-y: auto; /* Make the whole page scrollable */
+    overflow-y: auto;
+    /* Make the whole page scrollable */
     flex-direction: column;
 
     /* Custom scrollbar for webkit browsers */
@@ -33,17 +34,29 @@
     width: 8rem;
     z-index: 1;
     transform: translateX(-50%);
-    background: 
-        linear-gradient(color.change(var.$light-color, $alpha: 0.9), color.change(var.$light-color, $alpha: 0.1)) 
-        no-repeat center/2px 100%;
+
+    &::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 50%;
+        width: 2px;
+        background: linear-gradient(color.change(var.$light-color, $alpha: 0.9), color.change(var.$light-color, $alpha: 0.1));
+        transform: translateX(-50%);
+        mask-image: var(--line-mask);
+        -webkit-mask-image: var(--line-mask);
+    }
 }
 
 .timeline-year-marker {
-    position: absolute; 
-    backdrop-filter: blur(4px);
-    line-height: 1.5rem; /* This is used for the vertical centering calculation */
+    position: absolute;
+    line-height: 1.5rem;
+    /* This is used for the vertical centering calculation */
     left: 50%;
-    width: 100px;
+    width: fit-content;
+    padding: 0 34px;
+    /* Extra padding gives the 16px before/after lines breathing room to sit properly on the edges */
     transform: translateX(-50%);
     text-align: center;
     font-size: 0.9rem;
@@ -62,8 +75,14 @@
     background-color: color.change(var.$light-color, $alpha: 0.4);
     z-index: 1;
 }
-.timeline-year-marker::before { left: 0; }
-.timeline-year-marker::after { right: 0; }
+
+.timeline-year-marker::before {
+    left: 0;
+}
+
+.timeline-year-marker::after {
+    right: 0;
+}
 
 .timeline-event {
     @extend %button;
@@ -73,20 +92,33 @@
     max-width: 700px;
     z-index: 3;
     transform-origin: center;
-    transition: transform 0.2s ease-in-out, top 0.5s ease-in-out, background-color 0.2s ease-in-out; 
+    transition: transform 0.2s ease-in-out, top 0.5s ease-in-out, background-color 0.2s ease-in-out, opacity 0.5s ease-in-out;
 }
 
-.timeline-event:hover {
-    transform: scale(1.05);
-    scale: 1 !important;
+#timeline-body.is-loading .timeline-event,
+#timeline-body.is-loading .duration-bar {
+    opacity: 0;
+    transition: none !important;
 }
 
-.timeline-event:active {
-    transform: scale(1);
-    scale: 1 !important;
+#timeline-body.is-resizing .timeline-event {
+    transition: none !important;
 }
 
-.timeline-event.education { 
+@media (hover: hover) {
+    .timeline-event:hover {
+        transform: scale(1.05);
+        scale: 1 !important;
+        z-index: 4;
+    }
+
+    .timeline-event:active {
+        transform: scale(1);
+        scale: 1 !important;
+    }
+}
+
+.timeline-event.education {
     right: calc(50% + 96px);
 }
 
@@ -121,7 +153,7 @@
 }
 
 .expandable-content {
-    max-height: 0;  // Gets changed in JS
+    max-height: 0; // Gets changed in JS
     overflow: hidden;
     transition: max-height 0.5s ease-in-out;
 }
@@ -147,7 +179,8 @@
 .event-images-container {
     display: flex;
     width: 100%;
-    gap: 10px; /* Adjust the gap as needed */
+    gap: 10px;
+    /* Adjust the gap as needed */
     padding-top: 0.5rem;
     align-items: flex-start;
     box-sizing: border-box;
@@ -166,7 +199,11 @@
     width: 6px;
     border-radius: 3px;
     z-index: 3;
-    transition: all 0.2s ease-in-out;
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out, top 0.5s ease-in-out, height 0.5s ease-in-out;
+}
+
+#timeline-body:not(.is-loading) .duration-bar {
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out, top 0.5s ease-in-out, height 0.5s ease-in-out, opacity 0.5s ease-in-out;
 }
 
 .duration-bar.education {
@@ -192,23 +229,44 @@
 }
 
 /* --- Responsive Styles for smaller screens --- */
-@media (width <= #{var.$mobile-width}) {
+@media (width <=#{var.$mobile-width}) {
+    :root {
+        --mob-spine-width: 85px;
+        --mob-spine-margin: 5px;
+        /* Margin to the right of the spine */
+        --mob-spine-line-right: 30px;
+        --mob-card-gap: 15px;
+        /* Both left margin and right gap buffering the card */
+        --mob-edu-offset: 21px;
+        /* Distance from spine line */
+        --mob-work-offset: 36px;
+        /* Distance from spine line */
+    }
+
     .header h1 {
         font-size: 3rem;
     }
 
     .timeline-spine {
         left: auto;
-        right: 0;
+        right: var(--mob-spine-margin);
+        transform: none;
+        width: var(--mob-spine-width);
+    }
+
+    .timeline-spine::after {
+        left: auto;
+        right: var(--mob-spine-line-right);
         transform: none;
     }
 
     .timeline-year-marker {
         left: auto;
-        right: -25px;
-        width: 100px;
-        transform: none;
-        text-align: left;
+        right: calc(var(--mob-spine-margin) + var(--mob-spine-line-right));
+        width: fit-content;
+        padding: 0 8px;
+        transform: translateX(50%);
+        text-align: center;
     }
 
     .timeline-year-marker::before,
@@ -217,10 +275,10 @@
     }
 
     .timeline-event {
-        width: calc(100% - 195px); /* Adjust width for mobile */
-        min-width: 0; /* Reset min-width for mobile */
+        width: calc(100% - var(--mob-spine-margin) - var(--mob-spine-width) - (var(--mob-card-gap) * 2));
+        min-width: 0;
         left: auto !important;
-        right: 160px !important;
+        right: calc(var(--mob-spine-margin) + var(--mob-spine-width) + var(--mob-card-gap)) !important;
     }
 
     .duration-bar {
@@ -228,10 +286,19 @@
     }
 
     .duration-bar.education {
-        right: 85px;
+        right: calc(var(--mob-spine-margin) + var(--mob-spine-line-right) + var(--mob-edu-offset));
     }
-    
+
     .duration-bar.work {
-        right: 100px;
+        right: calc(var(--mob-spine-margin) + var(--mob-spine-line-right) + var(--mob-work-offset));
+    }
+
+    .event-images-container {
+        flex-direction: column;
+    }
+
+    .event-images-container img {
+        width: 100%;
+        height: auto;
     }
 }
