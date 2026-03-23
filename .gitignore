@@ -10,7 +10,6 @@ dist/
 # Local configuration/Security
 .env
 .env.local
-proxy.php
 
 # IDEs
 .vscode/

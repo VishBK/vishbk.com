@@ -1,23 +1,16 @@
 <?php
-/**
- * proxy.example.php
- * 
- * To use this proxy:
- * 1. Rename this file to proxy.php
- * 2. Replace 'YOUR_API_KEY_HERE' with your real Last.fm API key.
- * 3. Upload to your server root.
- */
-
+// allow requests from localhost during development, otherwise restrict to same origin
 if (isset($_SERVER['HTTP_ORIGIN'])) {
     $origin = $_SERVER['HTTP_ORIGIN'];
     if (strpos($origin, 'localhost') !== false || strpos($origin, '127.0.0.1') !== false) {
         header("Access-Control-Allow-Origin: $origin");
     }
 }
+
 header("Content-Type: application/json");
 
-$apiKey = "YOUR_API_KEY_HERE";
-$user = "YOUR_LASTFM_USERNAME";
+$apiKey = getenv('LASTFM_API_KEY');
+$user = "VishBK";
 $limit = 1;
 
 $apiUrl = "https://ws.audioscrobbler.com/2.0/?" . http_build_query([
@@ -30,6 +23,7 @@ $apiUrl = "https://ws.audioscrobbler.com/2.0/?" . http_build_query([
 
 $ch = curl_init($apiUrl);
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+// Optional: disable SSL verify to test if SSL is the issue
 curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 
 $response = curl_exec($ch);
@@ -43,5 +37,6 @@ if (curl_errno($ch)) {
 }
 
 curl_close($ch);
+
 echo $response;
 ?>
