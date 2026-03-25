@@ -10,10 +10,16 @@ COPY . .
 RUN npm run build
 
 # --- Stage 2: Final Production Image ---
-FROM php:8.2-cli-alpine
+FROM php:8.2-apache
+
+# Enable Apache mod_rewrite for .htaccess support
+RUN a2enmod rewrite
+
+# Allow .htaccess to override configurations
+RUN sed -i '/<Directory \/var\/www\/>/,/<\/Directory>/ s/AllowOverride None/AllowOverride All/' /etc/apache2/apache2.conf
 
 # Install CA certificates so curl can verify SSL
-RUN apk add --no-cache ca-certificates
+RUN apt-get update && apt-get install -y ca-certificates && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /var/www/html
 
@@ -23,7 +29,10 @@ COPY --from=builder /vishbk-website/dist /var/www/html
 # Copy your PHP proxy file
 COPY proxy.php /var/www/html/proxy.php
 
-EXPOSE 8000
+# Copy the .htaccess file to enable URL rewriting
+COPY .htaccess /var/www/html/.htaccess
 
-# Start PHP server
-CMD ["php", "-S", "0.0.0.0:8000", "-t", "/var/www/html"]
+# Update Apache to listen on port 8000 so we don't break existing docker run configs
+RUN sed -i 's/80/8000/g' /etc/apache2/sites-available/000-default.conf /etc/apache2/ports.conf
+
+EXPOSE 8000
