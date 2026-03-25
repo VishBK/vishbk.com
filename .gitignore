@@ -10,6 +10,7 @@ dist/
 # Local configuration/Security
 .env
 .env.local
+cacert.pem
 
 # IDEs
 .vscode/

@@ -38,23 +38,17 @@ html {
     flex: 1;
     width: 100%;
     height: 100%;
-    overflow-y: auto;
-    /* Allow manual scrolling */
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-
-    &::-webkit-scrollbar {
-        display: none;
-    }
-
+    overflow: hidden;
     position: relative;
-    display: flex;
-    /* Stack children */
-    flex-direction: column;
-    gap: 10px;
-    /* Space between the two lists matches item gap */
     mask-image: linear-gradient(to bottom, transparent, var.$dark-color 1.5rem, var.$dark-color calc(100% - 1.5rem), transparent);
     -webkit-mask-image: linear-gradient(to bottom, transparent, var.$dark-color 1.5rem, var.$dark-color calc(100% - 1.5rem), transparent);
+}
+
+.marquee-track {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    will-change: transform;
 }
 
 .marquee-content {
@@ -67,6 +61,7 @@ html {
     .marquee-item {
         position: relative;
         width: 90%;
+        font-family: "Lucida Handwriting";
         transition: scale 0.3s ease-in-out;
 
         img {
@@ -107,7 +102,6 @@ html {
             }
 
             .overlay-date {
-                font-family: "Lucida Handwriting", cursive;
                 font-size: 0.9rem;
                 font-style: italic;
                 opacity: 0.8;
@@ -115,7 +109,7 @@ html {
         }
 
         @media (hover: hover) {
-            &:hover {
+            &.hovered {
                 scale: 1.1;
                 z-index: 10;
                 /* Ensure it pops over neighbors if needed */
@@ -179,8 +173,9 @@ html {
         bottom: 0;
         left: 0;
         width: 100%;
-        padding: 2rem;
-        background: linear-gradient(to top, color.change(var.$dark-color, $alpha: 0.9), transparent);
+        padding: 3rem 2rem 2rem;
+        background: linear-gradient(to top, color.change(var.$dark-color, $alpha: 0.95) 0%, color.change(var.$dark-color, $alpha: 0.8) 50%, transparent 100%);
+        font-family: "Lucida Handwriting";
         color: var.$light-color;
         display: flex;
         flex-direction: column;
@@ -195,7 +190,6 @@ html {
         }
 
         .overlay-date {
-            font-family: "Lucida Handwriting", cursive;
             font-size: 1.2rem;
             opacity: 0.8;
         }
@@ -209,13 +203,14 @@ html {
 
     @media (hover: hover) {
         &:hover {
+            transition: all 0.5s ease-in-out, scale 0.25s ease-out;
             scale: 1.05;
             cursor: pointer;
         }
     }
 
     &:active {
-        transition: scale 0.1s ease-out;
+        transition: all 0.5s ease-in-out, scale 0.1s ease-out;
         scale: 1;
     }
 }
@@ -711,11 +706,15 @@ tableau-viz.loaded~.skeleton-loader,
     }
 
     .marquee-mask {
-        flex-direction: row;
         mask-image: linear-gradient(to right, transparent, var.$dark-color 1.5rem, var.$dark-color calc(100% - 1.5rem), transparent);
         -webkit-mask-image: linear-gradient(to right, transparent, var.$dark-color 1.5rem, var.$dark-color calc(100% - 1.5rem), transparent);
-        overflow-x: scroll;
-        overflow-y: hidden;
+        overflow: hidden;
+    }
+
+    .marquee-track {
+        flex-direction: row;
+        width: max-content;
+        height: 100%;
     }
 
     .marquee-content {

@@ -241,6 +241,13 @@ function hoverInteraction() {
     const triggers = document.querySelectorAll('.hover-trigger');
     const reset = () => { hoveredIcon = null; };
 
+    // Handle bfcache restoration (e.g. back button on mobile)
+    window.addEventListener('pageshow', (event) => {
+        if (event.persisted) {
+            reset();
+        }
+    });
+
     triggers.forEach(trigger => {
         const targetName = trigger.dataset.iconTarget; // e.g. "fa-code"
 

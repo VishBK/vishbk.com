@@ -9,26 +9,25 @@ import LastFM from "./lastfm.js";
 const RESPONSIVE_WIDTH = 1024; // Width at which the layout should switch to a mobile stack.
 // Concert images
 const IMAGE_LIST = [
-    { "artist": "Clipse", "date": "09/08/2025", "image": new URL("../images/music/clipse.avif", import.meta.url).href },
-    { "artist": "clipping.", "date": "08/08/2025", "image": new URL("../images/music/clipping.avif", import.meta.url).href },
-    { "artist": "clipping.", "date": "08/08/2025", "image": new URL("../images/music/clipping2.avif", import.meta.url).href },
-    { "artist": "The Weeknd", "date": "05/30/2025", "image": new URL("../images/music/TheWeeknd.avif", import.meta.url).href },
-    { "artist": "The Weeknd", "date": "05/30/2025", "image": new URL("../images/music/TheWeeknd2.avif", import.meta.url).href },
-    { "artist": "Hans Zimmer", "date": "09/22/2024", "image": new URL("../images/music/HansZimmer.avif", import.meta.url).href },
-    { "artist": "Hans Zimmer", "date": "09/22/2024", "image": new URL("../images/music/HansZimmer2.avif", import.meta.url).href },
-    { "artist": "JPEGMAFIA", "date": "09/06/2024", "image": new URL("../images/music/JPEGMAFIA.avif", import.meta.url).href },
-    { "artist": "Childish Gambino", "date": "09/02/2024", "image": new URL("../images/music/ChildishGambino.avif", import.meta.url).href },
-    { "artist": "ScHoolboy Q", "date": "07/26/2024", "image": new URL("../images/music/ScHoolboyQ.avif", import.meta.url).href },
-    { "artist": "Travis Scott", "date": "11/08/2023", "image": new URL("../images/music/TravisScott.avif", import.meta.url).href },
-    { "artist": "Run the Jewels", "date": "10/04/2023", "image": new URL("../images/music/RunTheJewels.avif", import.meta.url).href },
-    { "artist": "Death Grips", "date": "09/26/2023", "image": new URL("../images/music/DeathGrips.avif", import.meta.url).href },
-    { "artist": "JPEGMAFIA & Danny Brown", "date": "08/17/2023", "image": new URL("../images/music/JPEGDanny.avif", import.meta.url).href },
-    { "artist": "M83", "date": "04/19/2023", "image": new URL("../images/music/M83.avif", import.meta.url).href },
-    { "artist": "Kid Cudi", "date": "09/06/2022", "image": new URL("../images/music/KidCudi.avif", import.meta.url).href },
-    { "artist": "Pusha T", "date": "06/07/2022", "image": new URL("../images/music/PushaT.avif", import.meta.url).href },
-    { "artist": "JPEGMAFIA", "date": "11/09/2021", "image": new URL("../images/music/JPEGMAFIA1.avif", import.meta.url).href },
-    { "artist": "Kanye West", "date": "08/26/2021", "image": new URL("../images/music/Kanye.avif", import.meta.url).href },
-    { "artist": "Kanye West", "date": "08/26/2021", "image": new URL("../images/music/KanyeLine.avif", import.meta.url).href }
+    { "artist": "Clipse", "date": "09/08/2025", "image": new URL("../images/music/Clipse.png?as=avif", import.meta.url).href },
+    { "artist": "clipping.", "date": "08/08/2025", "image": new URL("../images/music/clipping.png?as=avif", import.meta.url).href },
+    { "artist": "The Weeknd", "date": "05/30/2025", "image": new URL("../images/music/TheWeeknd.jpg?as=avif", import.meta.url).href },
+    { "artist": "The Weeknd", "date": "05/30/2025", "image": new URL("../images/music/TheWeeknd2.png?as=avif", import.meta.url).href },
+    { "artist": "Hans Zimmer", "date": "09/22/2024", "image": new URL("../images/music/HansZimmer.jpg?as=avif", import.meta.url).href },
+    { "artist": "Hans Zimmer", "date": "09/22/2024", "image": new URL("../images/music/HansZimmer2.png?as=avif", import.meta.url).href },
+    { "artist": "JPEGMAFIA", "date": "09/06/2024", "image": new URL("../images/music/JPEGMAFIA2.jpg?as=avif", import.meta.url).href },
+    { "artist": "Childish Gambino", "date": "09/02/2024", "image": new URL("../images/music/ChildishGambino.jpg?as=avif", import.meta.url).href },
+    { "artist": "ScHoolboy Q", "date": "07/26/2024", "image": new URL("../images/music/ScHoolboyQ.jpg?as=avif", import.meta.url).href },
+    { "artist": "Travis Scott", "date": "11/08/2023", "image": new URL("../images/music/TravisScott.jpg?as=avif", import.meta.url).href },
+    { "artist": "Run the Jewels", "date": "10/04/2023", "image": new URL("../images/music/RunTheJewels.jpg?as=avif", import.meta.url).href },
+    { "artist": "Death Grips", "date": "09/26/2023", "image": new URL("../images/music/DeathGrips.jpg?as=avif", import.meta.url).href },
+    { "artist": "JPEGMAFIA & Danny Brown", "date": "08/17/2023", "image": new URL("../images/music/JPEGDanny.jpg?as=avif", import.meta.url).href },
+    { "artist": "M83", "date": "04/19/2023", "image": new URL("../images/music/M83.jpg?as=avif", import.meta.url).href },
+    { "artist": "Kid Cudi", "date": "09/06/2022", "image": new URL("../images/music/KidCudi.png?as=avif", import.meta.url).href },
+    { "artist": "Pusha T", "date": "06/07/2022", "image": new URL("../images/music/PushaT.png?as=avif", import.meta.url).href },
+    { "artist": "JPEGMAFIA", "date": "11/09/2021", "image": new URL("../images/music/JPEGMAFIA.jpg?as=avif", import.meta.url).href },
+    { "artist": "Kanye West", "date": "08/26/2021", "image": new URL("../images/music/Kanye.jpg?as=avif", import.meta.url).href },
+    { "artist": "Kanye West", "date": "08/26/2021", "image": new URL("../images/music/KanyeLine.jpg?as=avif", import.meta.url).href }
 ];
 
 // Initialize LastFM (singleton — shared with background.js, no duplicate API calls)
@@ -242,7 +241,7 @@ if (tableauViz) {
                 iframe.setAttribute('scrolling', 'no');
             }
         }
-        
+
         // Reveal the dashboard once it's loaded and scrollbars are removed
         tableauViz.classList.add('loaded');
     });
@@ -257,7 +256,7 @@ if (tableauViz) {
                 updateDeviceType();
                 const containerHeight = vizContainer.clientHeight;
                 tableauViz.setAttribute('height', containerHeight + 'px');
-                
+
                 // Hide dashboard during re-render to avoid scrollbar flashes
                 tableauViz.classList.remove('loaded');
                 tableauViz.src = tableauViz.src;
@@ -391,14 +390,18 @@ if (marqueeOriginal && marqueeDuplicate) {
                 clone.style.height = `${rect.height}px`;
 
                 // Cleanup after the CSS transition finishes
-                clone.addEventListener('transitionend', (e) => {
+                const handleTransitionEnd = (e) => {
                     // Only act on the clone's own transition (not children bubbling up)
-                    if (e.target !== clone) return;
+                    if (e.target !== clone || e.propertyName !== 'width') return;
+
+                    clone.removeEventListener('transitionend', handleTransitionEnd);
                     clone.remove();
                     wrapper.style.opacity = ''; // Restore visibility
                     document.body.classList.remove('no-scroll');
                     isPaused = false;
-                }, { once: true });
+                };
+
+                clone.addEventListener('transitionend', handleTransitionEnd);
 
                 clone.removeEventListener('click', closeLightbox);
             };
@@ -425,70 +428,88 @@ if (marqueeOriginal && marqueeDuplicate) {
     };
 
     waitForImages().then(() => {
-        // JS-based Infinite Scroll
+        // Transform-based infinite scroll (GPU composited, no layout thrashing)
         const mask = document.querySelector('.marquee-mask');
-        // let isPaused = false; // Moved to higher scope
-        let speed = 0.5; // Adjust for speed
-        let scrollPos = 1;
+        const track = mask.querySelector('.marquee-track');
+        const SCROLL_SPEED = 30; // px per second (frame-rate independent)
+        let scrollPos = 0;
+        let lastTime = 0;
 
-        const isHorizontal = () => window.matchMedia(`(max-width: ${RESPONSIVE_WIDTH}px)`).matches;
+        // Smooth wheel momentum
+        let wheelVelocity = 0;
+        const WHEEL_FRICTION = 0.9; // exponential decay per frame
+        const WHEEL_MIN_VELOCITY = 0.1; // stop threshold
 
-        // Initialize
-        if (isHorizontal()) {
-            // Start at the beginning of the duplicate set (loopSize) so we can scroll left
-            // loopSize equals roughly the width of one set.
-            // When we scroll left (decrease scrollLeft), we move towards 0.
-            // Visual: Duplicate -> Original
-            mask.scrollLeft = marqueeOriginal.offsetWidth + 10;
-        } else {
-            mask.scrollTop = 1;
-        }
+        // Cache horizontal state via matchMedia listener instead of polling every frame
+        const mql = window.matchMedia(`(max-width: ${RESPONSIVE_WIDTH}px)`);
+        let horizontal = mql.matches;
+        mql.addEventListener('change', (e) => {
+            horizontal = e.matches;
+            recalcLoopSize();
+        });
 
-        // Recalculate loop size dynamically to handle window resizing
-        const getLoopSize = () => {
-            if (isHorizontal()) {
-                return marqueeOriginal.offsetWidth + 10; // 10px gap
+        // Cache loop size — only recalculate on resize, not every frame
+        let loopSize = 0;
+        const GAP = 10; // matches CSS gap
+        const recalcLoopSize = () => {
+            loopSize = horizontal
+                ? marqueeOriginal.offsetWidth + GAP
+                : marqueeOriginal.offsetHeight + GAP;
+        };
+        recalcLoopSize();
+
+        // Recalculate on resize (debounced)
+        let resizeRAF = null;
+        window.addEventListener('resize', () => {
+            if (resizeRAF) cancelAnimationFrame(resizeRAF);
+            resizeRAF = requestAnimationFrame(recalcLoopSize);
+        });
+
+        // Apply transform to the track (runs on compositor — no layout/reflow)
+        const applyTransform = () => {
+            if (horizontal) {
+                track.style.transform = `translate3d(${-scrollPos}px,0,0)`;
+            } else {
+                track.style.transform = `translate3d(0,${-scrollPos}px,0)`;
             }
-            return marqueeOriginal.offsetHeight + 10;
         };
 
-        const animateScroll = () => {
-            if (!isPaused && mask) {
-                const horizontal = isHorizontal();
-                const currentSpeed = horizontal ? -0.5 : speed;
-
-                scrollPos += currentSpeed;
-
-                const loopSize = getLoopSize();
-
-                if (horizontal) {
-                    // Left-to-Right layout: scrolling LEFT (decreasing scrollPos)
-                    // If we go below 0, wrap to loopSize
-                    if (scrollPos <= 0) {
-                        scrollPos += loopSize;
-                    }
-                    // Safety for manual interaction pushing it too far right?
-                    // Not strictly needed with just auto-scroll but good for robustness if speed changes
-                    if (scrollPos >= loopSize * 2) {
-                        scrollPos -= loopSize;
-                    }
-
-                    mask.scrollLeft = scrollPos;
-                } else {
-                    // Top-to-Bottom layout: scrolling DOWN (increasing scrollPos)
-                    if (scrollPos >= loopSize + 1) {
-                        scrollPos -= loopSize;
-                    }
-                    mask.scrollTop = scrollPos;
-                }
-            } else if (mask) {
-                // Update internal position from manual scroll
-                if (isHorizontal()) {
-                    scrollPos = mask.scrollLeft;
-                } else {
-                    scrollPos = mask.scrollTop;
-                }
+        // Wrap scroll position into [0, loopSize) for infinite loop (both directions)
+        const wrapScrollPos = () => {
+            if (loopSize > 0) {
+                scrollPos = ((scrollPos % loopSize) + loopSize) % loopSize;
             }
+        };
+
+        const animateScroll = (now) => {
+            if (!lastTime) lastTime = now;
+            const dt = Math.min(now - lastTime, 50); // cap at 50ms to avoid jumps on tab switch
+            lastTime = now;
+
+            let needsUpdate = false;
+
+            // Auto-scroll
+            if (!isPaused && loopSize > 0) {
+                scrollPos += SCROLL_SPEED * (dt / 1000);
+                needsUpdate = true;
+            }
+
+            // Wheel momentum (runs even when paused for manual scrolling feel)
+            if (Math.abs(wheelVelocity) > WHEEL_MIN_VELOCITY) {
+                scrollPos += wheelVelocity;
+                wheelVelocity *= WHEEL_FRICTION;
+                needsUpdate = true;
+            } else {
+                wheelVelocity = 0;
+            }
+
+            if (needsUpdate) {
+                wrapScrollPos();
+                applyTransform();
+                // Re-evaluate hover when content moves under a stationary cursor
+                if (mouseInMask) scheduleHoverUpdate();
+            }
+
             requestAnimationFrame(animateScroll);
         };
 
@@ -503,28 +524,69 @@ if (marqueeOriginal && marqueeDuplicate) {
             }
         };
 
-        mask.addEventListener('mouseenter', pause);
-        mask.addEventListener('mouseleave', resume);
+        let mouseInMask = false;
+
+        mask.addEventListener('mouseenter', () => {
+            mouseInMask = true;
+            pause();
+            clearHovered();
+        });
+        mask.addEventListener('mouseleave', () => {
+            mouseInMask = false;
+            resume();
+            clearHovered();
+        });
         mask.addEventListener('touchstart', pause, { passive: true });
         mask.addEventListener('touchend', resume);
 
-        // Handle manual scroll looping
-        mask.addEventListener('scroll', () => {
-            const loopSize = getLoopSize();
-            const horizontal = isHorizontal();
-            const currentScroll = horizontal ? mask.scrollLeft : mask.scrollTop;
+        // Hover tracking — transforms don't trigger :hover re-evaluation,
+        // so we use elementFromPoint to manage a .hovered class after wheel scroll.
+        // Debounced to once-per-frame via rAF to avoid layout thrashing.
+        let mouseX = 0, mouseY = 0;
+        let currentHovered = null;
+        let hoverRAF = null;
 
-            if (currentScroll <= 0) {
-                // Infinite scroll backward
-                const newPos = currentScroll + loopSize;
-                if (horizontal) mask.scrollLeft = newPos; else mask.scrollTop = newPos;
-                scrollPos = newPos;
-            } else if (currentScroll >= loopSize + 1) {
-                // Infinite scroll forward
-                const newPos = currentScroll - loopSize;
-                if (horizontal) mask.scrollLeft = newPos; else mask.scrollTop = newPos;
-                scrollPos = newPos;
+        const updateHovered = () => {
+            const el = document.elementFromPoint(mouseX, mouseY);
+            const item = el?.closest('.marquee-item');
+            if (item === currentHovered) return;
+            if (currentHovered) currentHovered.classList.remove('hovered');
+            currentHovered = item;
+            if (item) item.classList.add('hovered');
+        };
+
+        const scheduleHoverUpdate = () => {
+            if (!hoverRAF) {
+                hoverRAF = requestAnimationFrame(() => {
+                    updateHovered();
+                    hoverRAF = null;
+                });
             }
+        };
+
+        const clearHovered = () => {
+            if (hoverRAF) {
+                cancelAnimationFrame(hoverRAF);
+                hoverRAF = null;
+            }
+            if (currentHovered) {
+                currentHovered.classList.remove('hovered');
+                currentHovered = null;
+            }
+        };
+
+        mask.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+            scheduleHoverUpdate();
         });
+
+        // Manual scroll via mouse wheel — feeds into momentum system
+        mask.addEventListener('wheel', (e) => {
+            e.preventDefault();
+            const delta = horizontal ? e.deltaX || e.deltaY : e.deltaY;
+            wheelVelocity += delta * 0.1;
+            scheduleHoverUpdate();
+        }, { passive: false });
     });
 }

@@ -1,15 +1,36 @@
 <?php
-// allow requests from localhost during development, otherwise restrict to same origin
+// Only allow GET requests
+if ($_SERVER['REQUEST_METHOD'] !== 'GET') {
+    http_response_code(405);
+    header("Content-Type: application/json");
+    echo json_encode(["error" => "Method not allowed"]);
+    exit;
+}
+
+// CORS: allow specific origins during development
 if (isset($_SERVER['HTTP_ORIGIN'])) {
-    $origin = $_SERVER['HTTP_ORIGIN'];
-    if (strpos($origin, 'localhost') !== false || strpos($origin, '127.0.0.1') !== false) {
-        header("Access-Control-Allow-Origin: $origin");
+    $allowed = [
+        'http://localhost:1234',
+        'http://localhost:8000',
+        'http://127.0.0.1:1234',
+        'http://127.0.0.1:8000',
+    ];
+    if (in_array($_SERVER['HTTP_ORIGIN'], $allowed, true)) {
+        header("Access-Control-Allow-Origin: " . $_SERVER['HTTP_ORIGIN']);
     }
 }
 
 header("Content-Type: application/json");
 
+// Validate API key is available
 $apiKey = getenv('LASTFM_API_KEY');
+if (!$apiKey) {
+    http_response_code(500);
+    echo json_encode(["error" => "Server configuration error"]);
+    error_log("proxy.php: LASTFM_API_KEY environment variable is not set");
+    exit;
+}
+
 $user = "VishBK";
 $limit = 1;
 
@@ -23,20 +44,27 @@ $apiUrl = "https://ws.audioscrobbler.com/2.0/?" . http_build_query([
 
 $ch = curl_init($apiUrl);
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-// Optional: disable SSL verify to test if SSL is the issue
-curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
+curl_setopt($ch, CURLOPT_CAINFO, __DIR__ . '/cacert.pem');
+curl_setopt($ch, CURLOPT_TIMEOUT, 10);
 
 $response = curl_exec($ch);
 
 if (curl_errno($ch)) {
-    $error_msg = curl_error($ch);
-    http_response_code(500);
-    echo json_encode(["error" => "Failed to contact API", "details" => $error_msg]);
+    error_log("proxy.php: cURL error — " . curl_error($ch));
+    http_response_code(502);
+    echo json_encode(["error" => "Failed to contact API"]);
     curl_close($ch);
     exit;
 }
 
+$httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 curl_close($ch);
 
+if ($httpCode !== 200) {
+    http_response_code(502);
+    echo json_encode(["error" => "Upstream API returned HTTP $httpCode"]);
+    exit;
+}
+
 echo $response;
-?>

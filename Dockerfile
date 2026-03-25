@@ -11,6 +11,10 @@ RUN npm run build
 
 # --- Stage 2: Final Production Image ---
 FROM php:8.2-cli-alpine
+
+# Install CA certificates so curl can verify SSL
+RUN apk add --no-cache ca-certificates
+
 WORKDIR /var/www/html
 
 # Copy the Parcel build output from the named stage
