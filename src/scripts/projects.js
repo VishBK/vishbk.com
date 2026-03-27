@@ -1,12 +1,6 @@
-import ColorThief from "colorthief";
-
-const colorThief = new ColorThief();
+import { getColorSync } from "colorthief";
 
 const RESPONSIVE_WIDTH = 768; // Width at which the timeline should switch to a mobile layout.
-
-/* ---------- Utility Functions ---------- */
-const isColorLight = ([r, g, b]) =>
-	((r*299 + g*587 + b*114) / 1000) > 128;
 
 /* ---------- Card Positioning ---------- */
 /**
@@ -98,18 +92,24 @@ function setDominantColor(card) {
 
     const applyColor = () => {
         try {
-            const color = colorThief.getColor(img);
-            const textVar = isColorLight(color)
-                ? "var(--dark-color-rgb)"
-                : "var(--light-color-rgb)";
-            card.style.setProperty("--card-bg-color", color);
+            const color = getColorSync(img, { quality: 20 });
+            const { r, g, b } = color.rgb();
+            const textVar = color.isDark
+                ? "var(--light-color-rgb)"
+                : "var(--dark-color-rgb)";
+            card.style.setProperty("--card-bg-color", `${r}, ${g}, ${b}`);
             card.style.setProperty("--card-text-rgb", textVar);
         } catch (err) {
             console.error("ColorThief failed:", err);
         }
     };
 
-    img.complete ? applyColor() : img.addEventListener("load", applyColor, { once: true });
+    if (img.complete) {
+        // Defer color extraction off the critical path
+        requestAnimationFrame(applyColor);
+    } else {
+        img.addEventListener("load", applyColor, { once: true });
+    }
 }
 
 /* ---------- Progressive Image Loading ---------- */
@@ -171,10 +171,22 @@ document.addEventListener("DOMContentLoaded", () => {
     const cards = document.querySelectorAll(".project-card");
     let zCounter = 5;  // Manages card stacking order
 
+    // --- Lazy color extraction via IntersectionObserver ---
+    // Only runs getColorSync when a card scrolls into the viewport,
+    // preventing heavy canvas work from blocking initial paint.
+    const colorObserver = new IntersectionObserver((entries, observer) => {
+        for (const entry of entries) {
+            if (entry.isIntersecting) {
+                setDominantColor(entry.target);
+                observer.unobserve(entry.target);
+            }
+        }
+    }, { rootMargin: '200px' }); // Start 200px before entering viewport
+
     cards.forEach(card => {
         card.style.animationDelay = `${-(Math.random() * 20)}s`;
         card.style.animationDuration = `${15 + Math.random() * 10}s`;
-        setDominantColor(card);
+        colorObserver.observe(card);
         setupImgProgressiveLoad(card);
 
         card.addEventListener("click", () => {

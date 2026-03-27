@@ -1,4 +1,4 @@
-import ColorThief from "colorthief";
+import { getPaletteSync } from "colorthief";
 
 const CACHE_KEY = 'lastfm_cache';
 
@@ -19,7 +19,6 @@ export default class LastFM {
     #apiUrl = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
         ? "http://127.0.0.1:8000/proxy.php"
         : "/proxy.php";
-    #colorThief = new ColorThief();
     #albumArt = new Image();
     #albumArtLoadPromise = null; // A promise that resolves once the album art has finished loading
     #changeListeners = []; // Callbacks notified on track changes
@@ -86,7 +85,8 @@ export default class LastFM {
                     artist: this.currentTrack.artist,
                     image: this.currentTrack.image
                 } : null,
-                colors: colors || null,
+                // Color objects can't be serialized; convert to plain arrays for cache
+                colors: colors ? colors.map(c => c.array()) : null,
                 timestamp: Date.now()
             };
             sessionStorage.setItem(CACHE_KEY, JSON.stringify(data));
@@ -187,7 +187,7 @@ export default class LastFM {
     /**
      * Extracts a color palette from the loaded album art.
      * @param {number} numColors - The desired number of colors in the palette.
-     * @returns {Promise<Array<[number, number, number]>>} A promise resolving to an array of RGB colors.
+     * @returns {Promise<Array<Color>>} A promise resolving to an array of colorthief Color objects.
      */
     async getAlbumColors(numColors) {
         try {
@@ -196,8 +196,8 @@ export default class LastFM {
 
             if (!this.currentAlbumArtUrl) return [];
 
-            // Get the palette, defaulting to an empty array if the library returns null.
-            const palette = this.#colorThief.getPalette(this.#albumArt, numColors) || [];
+            // colorthief v3 returns Color objects with .rgb(), .array(), .css(), .isDark, etc.
+            const palette = getPaletteSync(this.#albumArt, { colorCount: numColors, quality: 20 }) || [];
 
             // If the palette has some colors but fewer than requested, pad it by repeating the first color.
             if (palette.length > 0 && palette.length < numColors) {

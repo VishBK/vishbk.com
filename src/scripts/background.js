@@ -271,12 +271,12 @@ async function setColors() {
     // Check if LastFM is ready
     if (lastfm) {
         const palette = await lastfm.getAlbumColors(3);
-        // palette is [[r,g,b], ...]
+        // palette is an array of colorthief Color objects
         if (palette && palette.length >= 3) {
-            // Update TARGET colors instead of current
-            targetColors[0] = { r: palette[0][0], g: palette[0][1], b: palette[0][2] };
-            targetColors[1] = { r: palette[1][0], g: palette[1][1], b: palette[1][2] };
-            targetColors[2] = { r: palette[2][0], g: palette[2][1], b: palette[2][2] };
+            // Color.rgb() returns { r, g, b } — matches targetColors format
+            targetColors[0] = palette[0].rgb();
+            targetColors[1] = palette[1].rgb();
+            targetColors[2] = palette[2].rgb();
 
             // Also update CSS vars for other UI elements if needed
             // NOTE: We update these in the updateColors loop now for smooth fading.
