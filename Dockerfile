@@ -1,5 +1,5 @@
 # --- Stage 1: Build the Parcel Frontend ---
-FROM node:20-alpine AS builder
+FROM node:lts-alpine AS builder
 # Set a descriptive working directory
 WORKDIR /vishbk-website
 
@@ -10,7 +10,7 @@ COPY . .
 RUN npm run build
 
 # --- Stage 2: Final Production Image ---
-FROM php:8.2-apache
+FROM php:8.4-apache
 
 # Enable Apache mod_rewrite for .htaccess support
 RUN a2enmod rewrite

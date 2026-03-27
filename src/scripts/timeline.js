@@ -14,7 +14,7 @@ const TIMELINE_DATA = [
         type: 'education', title: 'High School', place: 'University High School', start: '2014-08-18', end: '2018-05-20',
         description: "I first learned coding in my AP Computer Science class Sophomore year writing Java. \
         I also captained the chess team all four years, participated in FIRST robotics in team 4213 for two years, and earned my Eagle Scout.",
-        logo: new URL('../images/career/CareerLogos/UHigh.avif', import.meta.url).href, images: [new URL('../images/career/FIRSTTeam.avif', import.meta.url).href, new URL('../images/career/HighSchoolGraduation.avif', import.meta.url).href]
+        logo: new URL('../images/career/CareerLogos/UHigh.avif', import.meta.url), images: [new URL('../images/career/FIRSTTEAM.jpg?as=avif', import.meta.url), new URL('../images/career/HighSchoolGraduation.jpg?as=avif', import.meta.url)]
     },
 
     {
@@ -23,7 +23,7 @@ const TIMELINE_DATA = [
         I learned everything from C++, to reinforcement learning, to compilers, and operating systems. \
         However, in my later years I focused more on AI and ML. \
         During this time, I participated in MRDC, similar to the First Robotics Competition, and the SIGPwny cybersecurity club.",
-        logo: new URL('../images/career/CareerLogos/UofI.avif', import.meta.url).href, images: [new URL('../images/career/CypherCon.avif', import.meta.url).href, new URL('../images/career/UofIGraduation.avif', import.meta.url).href]
+        logo: new URL('../images/career/CareerLogos/UofI.avif', import.meta.url), images: [new URL('../images/career/CypherCon.png?as=avif', import.meta.url), new URL('../images/career/UIUCGraduation.jpg?as=avif', import.meta.url)]
     },
 
     {
@@ -31,7 +31,7 @@ const TIMELINE_DATA = [
         description: "I worked at AmFam as a data analyst intern on the data reporting team. \
         Since this was my first work experience, I learned how a large company operates and the pros and cons that come with that. \
         My work mainly consisted of creating Tableau dashboards and using Python to replace a SAS project, while documenting and teaching coworkers without coding experience.",
-        logo: new URL('../images/career/CareerLogos/AmFam.avif', import.meta.url).href, images: []
+        logo: new URL('../images/career/CareerLogos/AmFam.avif', import.meta.url), images: []
     },
 
     {
@@ -40,7 +40,7 @@ const TIMELINE_DATA = [
         As a QA Engineer, I worked with multiple teams to identify bugs in the floor cleaning robots. \
         I built out mock components and automated test cases to comply with the strict standards of robots deployed in public spaces. \
         I was fully remote for this position, but visited the office in San Diego for two weeks and enjoyed the people and location.",
-        logo: new URL('../images/career/CareerLogos/BrainCorp.avif', import.meta.url).href, images: [new URL('../images/career/BrainCorp.avif', import.meta.url).href, new URL('../images/career/BrainCorpVolleyball.avif', import.meta.url).href]
+        logo: new URL('../images/career/CareerLogos/BrainCorp.avif', import.meta.url), images: [new URL('../images/career/BrainCorp.jpg?as=avif', import.meta.url), new URL('../images/career/BrainCorpVolleyball.jpg?as=avif', import.meta.url)]
     },
 
     {
@@ -48,7 +48,7 @@ const TIMELINE_DATA = [
         description: "After completing my Bachelor's, I wanted to learn more in depth about robotics and research, so I decided to pursue a Master's. \
         The robotics program at Georgia Tech consists of choosing three focus areas (mine were perception, artificial intelligence, and human-robot interaction) and completing a capstone project in the last two semesters. \
         My capstone project was tracking the real-time state of an opponent's racket in tennis and table tennis using computer vision and an IMU.",
-        logo: new URL('../images/career/CareerLogos/GeorgiaTech.avif', import.meta.url).href, images: [new URL('../images/career/GeorgiaTechHalloween.avif', import.meta.url).href, new URL('../images/career/GeorgiaTechGraduation.avif', import.meta.url).href]
+        logo: new URL('../images/career/CareerLogos/GeorgiaTech.avif', import.meta.url), images: [new URL('../images/career/GeorgiaTechHalloween.jpg?as=avif', import.meta.url), new URL('../images/career/GeorgiaTechGraduation.jpg?as=avif', import.meta.url)]
     },
 
     {
@@ -57,7 +57,7 @@ const TIMELINE_DATA = [
         one being satellite image tracking with our own small observatory, and the other building a dashboard to visualize nuclear stronglink data for a QA team. \
         I enjoyed meeting and working with the interns in our department while living in Albuquerque for the summer. \
         After that summer, I worked part-time researching methods for onboard cybersecurity on satellites while finishing my Master's.",
-        logo: new URL('../images/career/CareerLogos/Sandia.avif', import.meta.url).href, images: [new URL('../images/career/LosAlamos.avif', import.meta.url).href, new URL('../images/career/SandiaTeam.avif', import.meta.url).href]
+        logo: new URL('../images/career/CareerLogos/Sandia.avif', import.meta.url), images: [new URL('../images/career/LosAlamos.jpg?as=avif', import.meta.url), new URL('../images/career/SandiaTeam.jpg?as=avif', import.meta.url)]
     },
 ];
 

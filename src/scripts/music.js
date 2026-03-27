@@ -9,25 +9,25 @@ import LastFM from "./lastfm.js";
 const RESPONSIVE_WIDTH = 1024; // Width at which the layout should switch to a mobile stack.
 // Concert images
 const IMAGE_LIST = [
-    { "artist": "Clipse", "date": "09/08/2025", "image": new URL("../images/music/Clipse.png?as=avif", import.meta.url).href },
-    { "artist": "clipping.", "date": "08/08/2025", "image": new URL("../images/music/clipping.png?as=avif", import.meta.url).href },
-    { "artist": "The Weeknd", "date": "05/30/2025", "image": new URL("../images/music/TheWeeknd.jpg?as=avif", import.meta.url).href },
-    { "artist": "The Weeknd", "date": "05/30/2025", "image": new URL("../images/music/TheWeeknd2.png?as=avif", import.meta.url).href },
-    { "artist": "Hans Zimmer", "date": "09/22/2024", "image": new URL("../images/music/HansZimmer.jpg?as=avif", import.meta.url).href },
-    { "artist": "Hans Zimmer", "date": "09/22/2024", "image": new URL("../images/music/HansZimmer2.png?as=avif", import.meta.url).href },
-    { "artist": "JPEGMAFIA", "date": "09/06/2024", "image": new URL("../images/music/JPEGMAFIA2.jpg?as=avif", import.meta.url).href },
-    { "artist": "Childish Gambino", "date": "09/02/2024", "image": new URL("../images/music/ChildishGambino.jpg?as=avif", import.meta.url).href },
-    { "artist": "ScHoolboy Q", "date": "07/26/2024", "image": new URL("../images/music/ScHoolboyQ.jpg?as=avif", import.meta.url).href },
-    { "artist": "Travis Scott", "date": "11/08/2023", "image": new URL("../images/music/TravisScott.jpg?as=avif", import.meta.url).href },
-    { "artist": "Run the Jewels", "date": "10/04/2023", "image": new URL("../images/music/RunTheJewels.jpg?as=avif", import.meta.url).href },
-    { "artist": "Death Grips", "date": "09/26/2023", "image": new URL("../images/music/DeathGrips.jpg?as=avif", import.meta.url).href },
-    { "artist": "JPEGMAFIA & Danny Brown", "date": "08/17/2023", "image": new URL("../images/music/JPEGDanny.jpg?as=avif", import.meta.url).href },
-    { "artist": "M83", "date": "04/19/2023", "image": new URL("../images/music/M83.jpg?as=avif", import.meta.url).href },
-    { "artist": "Kid Cudi", "date": "09/06/2022", "image": new URL("../images/music/KidCudi.png?as=avif", import.meta.url).href },
-    { "artist": "Pusha T", "date": "06/07/2022", "image": new URL("../images/music/PushaT.png?as=avif", import.meta.url).href },
-    { "artist": "JPEGMAFIA", "date": "11/09/2021", "image": new URL("../images/music/JPEGMAFIA.jpg?as=avif", import.meta.url).href },
-    { "artist": "Kanye West", "date": "08/26/2021", "image": new URL("../images/music/Kanye.jpg?as=avif", import.meta.url).href },
-    { "artist": "Kanye West", "date": "08/26/2021", "image": new URL("../images/music/KanyeLine.jpg?as=avif", import.meta.url).href }
+    { "artist": "Clipse", "date": "09/08/2025", "image": new URL("../images/music/Clipse.png?as=avif", import.meta.url) },
+    { "artist": "clipping.", "date": "08/08/2025", "image": new URL("../images/music/clipping.png?as=avif", import.meta.url) },
+    { "artist": "The Weeknd", "date": "05/30/2025", "image": new URL("../images/music/TheWeeknd.jpg?as=avif", import.meta.url) },
+    { "artist": "The Weeknd", "date": "05/30/2025", "image": new URL("../images/music/TheWeeknd2.png?as=avif", import.meta.url) },
+    { "artist": "Hans Zimmer", "date": "09/22/2024", "image": new URL("../images/music/HansZimmer.jpg?as=avif", import.meta.url) },
+    { "artist": "Hans Zimmer", "date": "09/22/2024", "image": new URL("../images/music/HansZimmer2.png?as=avif", import.meta.url) },
+    { "artist": "JPEGMAFIA", "date": "09/06/2024", "image": new URL("../images/music/JPEGMAFIA2.jpg?as=avif", import.meta.url) },
+    { "artist": "Childish Gambino", "date": "09/02/2024", "image": new URL("../images/music/ChildishGambino.jpg?as=avif", import.meta.url) },
+    { "artist": "ScHoolboy Q", "date": "07/26/2024", "image": new URL("../images/music/ScHoolboyQ.jpg?as=avif", import.meta.url) },
+    { "artist": "Travis Scott", "date": "11/08/2023", "image": new URL("../images/music/TravisScott.jpg?as=avif", import.meta.url) },
+    { "artist": "Run the Jewels", "date": "10/04/2023", "image": new URL("../images/music/RunTheJewels.jpg?as=avif", import.meta.url) },
+    { "artist": "Death Grips", "date": "09/26/2023", "image": new URL("../images/music/DeathGrips.jpg?as=avif", import.meta.url) },
+    { "artist": "JPEGMAFIA & Danny Brown", "date": "08/17/2023", "image": new URL("../images/music/JPEGDanny.jpg?as=avif", import.meta.url) },
+    { "artist": "M83", "date": "04/19/2023", "image": new URL("../images/music/M83.jpg?as=avif", import.meta.url) },
+    { "artist": "Kid Cudi", "date": "09/06/2022", "image": new URL("../images/music/KidCudi.png?as=avif", import.meta.url) },
+    { "artist": "Pusha T", "date": "06/07/2022", "image": new URL("../images/music/PushaT.png?as=avif", import.meta.url) },
+    { "artist": "JPEGMAFIA", "date": "11/09/2021", "image": new URL("../images/music/JPEGMAFIA.jpg?as=avif", import.meta.url) },
+    { "artist": "Kanye West", "date": "08/26/2021", "image": new URL("../images/music/Kanye.jpg?as=avif", import.meta.url) },
+    { "artist": "Kanye West", "date": "08/26/2021", "image": new URL("../images/music/KanyeLine.jpg?as=avif", import.meta.url) }
 ];
 
 // Initialize LastFM (singleton — shared with background.js, no duplicate API calls)

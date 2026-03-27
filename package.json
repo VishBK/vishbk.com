@@ -26,7 +26,8 @@
     "build:css": "run-s css:scss css:autoprefixer",
     "serve:php": "php -S 127.0.0.1:8000",
     "parcel": "parcel",
-    "build": "run-s build:css parcel build",
+    "build:parcel": "parcel build",
+    "build": "run-s build:css build:parcel",
     "serve": "run-p serve:php parcel",
     "watch:css": "onchange \"src/scss/*.scss\" --await-write-finish 900 -- npm run build:css"
   },
