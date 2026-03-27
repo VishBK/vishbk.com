@@ -45,7 +45,6 @@ $apiUrl = "https://ws.audioscrobbler.com/2.0/?" . http_build_query([
 $ch = curl_init($apiUrl);
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
-curl_setopt($ch, CURLOPT_CAINFO, __DIR__ . '/cacert.pem');
 curl_setopt($ch, CURLOPT_TIMEOUT, 10);
 
 $response = curl_exec($ch);

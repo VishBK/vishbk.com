@@ -26,6 +26,9 @@ WORKDIR /var/www/html
 # Copy the Parcel build output from the named stage
 COPY --from=builder /vishbk-website/dist /var/www/html
 
+# Explicitly copy the icons directory so all absolute /icons/... references work
+COPY icons /var/www/html/icons
+
 # Copy your PHP proxy file
 COPY proxy.php /var/www/html/proxy.php
 
