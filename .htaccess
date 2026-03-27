@@ -2,7 +2,7 @@ RewriteEngine On
 
 # 1. Redirect standard .html paths to their extensionless versions
 RewriteCond %{THE_REQUEST} ^[A-Z]{3,9}\ /([^\ ]+)\.html
-RewriteRule ^/?(.*)\.html$ /$1 [L,R=301]
+RewriteRule ^/?(.*)\.html$ https://%{HTTP_HOST}/$1 [L,R=301]
 
 # 2. Internally serve the .html file when the clean URL is requested
 RewriteCond %{REQUEST_FILENAME} !-d

@@ -64,9 +64,11 @@ jobs:
           port: 22221
           script: |
             set -e
-            DOCKER="/usr/local/bin/docker"
 
+            DOCKER="/usr/local/bin/docker"
             IMAGE_NAME="${{ env.IMAGE_NAME }}:latest"
+
+            cd /volume1/docker
 
             echo "Pulling latest image: $IMAGE_NAME"
             $DOCKER pull $IMAGE_NAME

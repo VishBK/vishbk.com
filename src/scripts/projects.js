@@ -18,7 +18,7 @@ function arrangeInGrid(cards, container) {
     // Use a non-expanded card as the reference for grid dimensions
     const referenceCard = Array.from(cards).find(c => !c.classList.contains('expanded')) || cards[0];
     const cardWidth = referenceCard.offsetWidth;
-    
+
     // Find the max height among all cards (excluding expanded ones if possible for safety, though height usually consistent)
     let maxCardHeight = 0;
     cards.forEach(card => {
@@ -31,7 +31,7 @@ function arrangeInGrid(cards, container) {
 
     const minHorizontalGap = 40;
     const verticalGap = 40; // Kept small and fixed
-    
+
     const maxCols = Math.floor((containerWidth + minHorizontalGap) / (cardWidth + minHorizontalGap));
     let cols = Math.max(1, Math.min(maxCols, cards.length));
 
@@ -43,7 +43,7 @@ function arrangeInGrid(cards, container) {
     // Calculate dynamic horizontal gap to push cards toward the edges or distribute evenly
     const horizontalGap = Math.max(minHorizontalGap, (containerWidth - (cols * cardWidth)) / (cols + 1));
     const gridWidth = cols * cardWidth + (cols - 1) * horizontalGap;
-    
+
     // Center the grid horizontally (X-axis)
     const startX = (containerWidth - gridWidth) / 2;
     const startY = 40; // Moderate top margin
@@ -51,7 +51,7 @@ function arrangeInGrid(cards, container) {
     cards.forEach((card, index) => {
         const col = index % cols;
         const row = Math.floor(index / cols);
-        
+
         const x = startX + col * (cardWidth + horizontalGap);
         let y = startY + row * (maxCardHeight + verticalGap);
 
@@ -62,7 +62,7 @@ function arrangeInGrid(cards, container) {
         if (row % 2 !== 0) {
             y += 20;
         }
-        
+
         const transformValue = `translate(${x}px, ${y}px)`;
         card.style.setProperty('--initial-transform', transformValue);
     });
@@ -190,73 +190,73 @@ document.addEventListener("DOMContentLoaded", () => {
         setupImgProgressiveLoad(card);
 
         card.addEventListener("click", () => {
-             const isExpanding = !card.classList.contains("expanded");
-             const details = card.querySelector(".project-details");
+            const isExpanding = !card.classList.contains("expanded");
+            const details = card.querySelector(".project-details");
 
-             if (isExpanding) {
-                 // OPENING:
-                 // 1. Capture current drift position from the active animation
-                 const style = window.getComputedStyle(card);
-                 const currentTranslate = style.translate;
-                 
-                 let x = '0px';
-                 let y = '0px';
-                 if (currentTranslate && currentTranslate !== 'none') {
-                     const parts = currentTranslate.split(/\s+/);
-                     x = parts[0] || '0px';
-                     y = parts[1] || '0px';
-                 }
-                 
-                 // 2. Set these as CSS variables to correct the centering transform
-                 card.style.setProperty('--drift-x', x);
-                 card.style.setProperty('--drift-y', y);
+            if (isExpanding) {
+                // OPENING:
+                // 1. Capture current drift position from the active animation
+                const style = window.getComputedStyle(card);
+                const currentTranslate = style.translate;
 
-                 // 3. Expand (CSS pauses animation and applies compensation transform)
-                 card.classList.add("expanded");
-                 if (details) details.style.maxHeight = details.scrollHeight + "px";
-                 
-                 zCounter++;
-                 card.style.zIndex = zCounter;
+                let x = '0px';
+                let y = '0px';
+                if (currentTranslate && currentTranslate !== 'none') {
+                    const parts = currentTranslate.split(/\s+/);
+                    x = parts[0] || '0px';
+                    y = parts[1] || '0px';
+                }
 
-             } else {
-                 // CLOSING:
-                 // 1. Keep animation paused so it doesn't jump while moving back
-                 // (The class removal would otherwise resume it immediately)
-                 // We rely on the fact that the animation is ALREADY paused by the class,
-                 // but removing the class removes that rule. So we set it inline first.
-                 card.style.animationPlayState = 'paused';
-                 
-                 // 2. Remove class - CSS transition moves it back to original position
-                 card.classList.remove("expanded");
-                 if (details) details.style.maxHeight = "0px";
+                // 2. Set these as CSS variables to correct the centering transform
+                card.style.setProperty('--drift-x', x);
+                card.style.setProperty('--drift-y', y);
 
-                 // 3. Wait for transition to finish, then resume animation
-                 const onShrinkFinish = (event) => {
-                     // Wait for transform to finish (the movement back to grid)
-                     if (event.target === card && event.propertyName === "transform") {
-                         // Resume drifting
-                         card.style.animationPlayState = ''; 
-                         
-                         // Clean up
-                         card.style.removeProperty('--drift-x');
-                         card.style.removeProperty('--drift-y');
-                         card.style.removeProperty("z-index");
-                         card.removeEventListener("transitionend", onShrinkFinish);
-                     }
-                 };
-                 card.addEventListener("transitionend", onShrinkFinish);
-             }
+                // 3. Expand (CSS pauses animation and applies compensation transform)
+                card.classList.add("expanded");
+                if (details) details.style.maxHeight = details.scrollHeight + "px";
 
-             // Handle grid layout update after size change
-             const onSizeChange = (e) => {
-                 if (e.target === card && (e.propertyName === "width" || e.propertyName === "max-height")) {
-                     arrangeInGrid(cards, container);
-                 }
-             };
-             card.addEventListener("transitionend", onSizeChange, { once: true });
-         });
+                zCounter++;
+                card.style.zIndex = zCounter;
+
+            } else {
+                // CLOSING:
+                // 1. Keep animation paused so it doesn't jump while moving back
+                // (The class removal would otherwise resume it immediately)
+                // We rely on the fact that the animation is ALREADY paused by the class,
+                // but removing the class removes that rule. So we set it inline first.
+                card.style.animationPlayState = 'paused';
+
+                // 2. Remove class - CSS transition moves it back to original position
+                card.classList.remove("expanded");
+                if (details) details.style.maxHeight = "0px";
+
+                // 3. Wait for transition to finish, then resume animation
+                const onShrinkFinish = (event) => {
+                    // Wait for transform to finish (the movement back to grid)
+                    if (event.target === card && event.propertyName === "transform") {
+                        // Resume drifting
+                        card.style.animationPlayState = '';
+
+                        // Clean up
+                        card.style.removeProperty('--drift-x');
+                        card.style.removeProperty('--drift-y');
+                        card.style.removeProperty("z-index");
+                        card.removeEventListener("transitionend", onShrinkFinish);
+                    }
+                };
+                card.addEventListener("transitionend", onShrinkFinish);
+            }
+
+            // Handle grid layout update after size change
+            const onSizeChange = (e) => {
+                if (e.target === card && (e.propertyName === "width" || e.propertyName === "max-height")) {
+                    arrangeInGrid(cards, container);
+                }
+            };
+            card.addEventListener("transitionend", onSizeChange, { once: true });
+        });
     });
-    
+
     /**
      * Updates the layout based on the current window size.
      */
@@ -267,7 +267,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 card.style.position = '';
                 card.style.left = '';
                 card.style.top = '';
-                
+
                 // Keep expanded cards' height updated for mobile responsiveness
                 if (card.classList.contains('expanded')) {
                     const details = card.querySelector('.project-details');
@@ -280,7 +280,7 @@ document.addEventListener("DOMContentLoaded", () => {
         } else {
 
             arrangeInGrid(cards, container);
-            
+
             // Also ensure desktop expanded height is correct
             cards.forEach(card => {
                 if (card.classList.contains('expanded')) {
@@ -300,7 +300,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         requestAnimationFrame(() => {
             performLayoutUpdate();
-            
+
             clearTimeout(resizeTimeout);
             resizeTimeout = setTimeout(() => {
                 container.classList.remove('is-resizing');
@@ -314,18 +314,18 @@ document.addEventListener("DOMContentLoaded", () => {
     const initLayout = () => {
         // 1. Initial layout pass immediately (even if images aren't ready)
         performLayoutUpdate();
-        
+
         // 2. Add 'is-ready' to show the cards (fade in)
         container.classList.add('is-ready');
-        
+
         // 3. Listen for image loads to re-calculate layout if dimensions change
         cards.forEach(card => {
-             const img = card.querySelector('.slide:first-child img');
-             if (img && !img.complete) {
-                 img.addEventListener('load', () => {
-                     requestAnimationFrame(performLayoutUpdate);
-                 }, { once: true });
-             }
+            const img = card.querySelector('.slide:first-child img');
+            if (img && !img.complete) {
+                img.addEventListener('load', () => {
+                    requestAnimationFrame(performLayoutUpdate);
+                }, { once: true });
+            }
         });
 
         // 4. Start observing for container changes (resize)
