@@ -277,6 +277,8 @@ async function setColors() {
             targetColors[0] = palette[0].rgb();
             targetColors[1] = palette[1].rgb();
             targetColors[2] = palette[2].rgb();
+            console.log(targetColors);
+            console.log(palette);
 
             // Also update CSS vars for other UI elements if needed
             // NOTE: We update these in the updateColors loop now for smooth fading.

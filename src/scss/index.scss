@@ -32,6 +32,11 @@ body {
     color: var.$light-color;
 }
 
+body.no-scroll {
+    overflow: hidden;
+    touch-action: none;   
+}
+
 h1 {
     font-size: clamp(3.5rem, 10vmin, 7rem);
 }

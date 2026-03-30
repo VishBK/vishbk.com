@@ -215,7 +215,6 @@ html {
     }
 }
 
-/* Tableau dashboard styles */
 /* Center column styles */
 .center-column {
     flex: 1;
@@ -368,15 +367,31 @@ tableau-viz.loaded~.skeleton-loader,
         white-space: nowrap;
         text-decoration: none;
         z-index: 10;
-        /* Ensure it stays above scrolling text */
-        transition: opacity 0.5s ease-in-out, color 0.5s ease-in-out, transform 0.2s ease;
 
+        transition: filter 0.5s ease-in-out, color 0.5s ease-in-out, transform 0.2s ease;
         cursor: pointer;
+
+        &.is-playing {
+            animation: pulseOpacity 4s infinite ease;
+        }
 
         @media (hover: hover) {
             &:hover {
-                opacity: 1;
+                animation-play-state: paused;
+                filter: brightness(1.5);
             }
+        }
+    }
+
+    @keyframes pulseOpacity {
+
+        0%,
+        100% {
+            opacity: 1;
+        }
+
+        50% {
+            opacity: 0.7;
         }
     }
 
@@ -460,9 +475,7 @@ tableau-viz.loaded~.skeleton-loader,
             font-size: 1rem;
             white-space: nowrap;
             overflow: hidden;
-            /* Mask for fade effect on sides during marquee - applied via JS class if needed */
-            /* mask-image: linear-gradient(to right, transparent, black 1rem, black calc(100% - 1rem), transparent); */
-            /* -webkit-mask-image: linear-gradient(to right, transparent, black 1rem, black calc(100% - 1rem), transparent); */
+
 
             &.mask-active {
                 /* Default static state: Solid left, Faded right */
@@ -730,6 +743,42 @@ tableau-viz.loaded~.skeleton-loader,
             flex-shrink: 0;
             user-select: none;
             /* Prevent accidental selection during swipe */
+        }
+    }
+
+    .marquee-item-clone {
+
+        /* Default mobile adjustments */
+        .image-overlay {
+            .overlay-artist {
+                font-size: 1.5rem;
+                /* slightly smaller on mobile to prevent wrapping */
+                margin-bottom: 0.4rem;
+            }
+
+            .overlay-date {
+                font-size: 1rem;
+            }
+        }
+
+        &.caption-outside {
+            overflow: visible;
+
+            img {
+                border-radius: 20px;
+            }
+
+            .image-overlay {
+                bottom: auto;
+                top: 100%;
+                background: transparent;
+                /* Remove the bottom gradient fade since it isn't over an image */
+                padding: 1rem 1rem;
+
+                /* Enhance readability when floating openly over the background */
+                text-shadow: 0 2px 10px color.change(var.$dark-color, $alpha: 0.8),
+                    0 4px 20px color.change(var.$dark-color, $alpha: 0.6);
+            }
         }
     }
 

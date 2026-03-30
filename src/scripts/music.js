@@ -42,7 +42,6 @@ const IMAGE_LIST = [
         });
     } catch (e) {
         console.error("LastFM Init Error:", e);
-        document.getElementById('last-fm-track').textContent = "Failed to load music data";
     }
 })();
 
@@ -100,12 +99,10 @@ function updateLastFmUI(track, artUrl) {
     const label = document.querySelector('.last-played-label');
     if (track['@attr'] && track['@attr'].nowplaying === "true") {
         label.textContent = "Listening To";
-        label.style.color = "color-mix(in srgb, var(--color1), #d8d8d8 30%)";
-        label.style.opacity = "0.9";
+        label.classList.add('is-playing');
     } else {
         label.textContent = "Last Played";
-        label.style.color = "";
-        label.style.opacity = "";
+        label.classList.remove('is-playing');
     }
 
     // 5. Swap state
@@ -132,7 +129,6 @@ function checkMarquee(container) {
     // Measure
     const contentWidth = container.scrollWidth;
     const boxWidth = container.clientWidth;
-    // console.log("MARQUEE CHECK", contentWidth, boxWidth);
 
     if (contentWidth > boxWidth) {
         // Needs marquee
@@ -271,144 +267,125 @@ const marqueeDuplicate = document.getElementById('marquee-duplicate');
 if (marqueeOriginal && marqueeDuplicate) {
     const backdrop = document.querySelector('.lightbox-backdrop');
     let isPaused = false;
+    const pause = () => isPaused = true;
+    const resume = () => {
+        if (!document.querySelector('.marquee-item-clone')) {
+            isPaused = false;
+        }
+    };
 
-    const createMarqueeItem = (item) => {
-        const wrapper = document.createElement('div');
-        wrapper.className = 'marquee-item';
+    /**
+     * Opens a lightbox for the given marquee item.
+     * Clones the item, animates it to the center of the viewport,
+     * and sets up close/resize handlers.
+     */
+    const openLightbox = (wrapper) => {
+        if (document.querySelector('.marquee-item-clone')) return;
+        pause();
 
-        const img = document.createElement('img');
-        img.src = item.image;
-        img.alt = item.artist;
-        img.crossOrigin = "anonymous";
+        // 1. Get initial position & create clone
+        const rect = wrapper.getBoundingClientRect();
+        const clone = wrapper.cloneNode(true);
+        clone.classList.remove('marquee-item');
+        clone.classList.add('marquee-item-clone');
 
-        const overlay = document.createElement('div');
-        overlay.className = 'image-overlay';
+        clone.style.top = `${rect.top}px`;
+        clone.style.left = `${rect.left}px`;
+        clone.style.width = `${rect.width}px`;
+        clone.style.height = `${rect.height}px`;
 
-        const artist = document.createElement('span');
-        artist.className = 'overlay-artist';
-        artist.textContent = item.artist;
+        document.body.appendChild(clone);
+        document.body.classList.add('no-scroll');
+        void clone.offsetWidth; // Force reflow
 
-        const date = document.createElement('span');
-        date.className = 'overlay-date';
-        date.textContent = item.date;
+        wrapper.style.opacity = '0';
+        backdrop.classList.add('active');
 
-        overlay.appendChild(artist);
-        overlay.appendChild(date);
-
-        wrapper.appendChild(img);
-        wrapper.appendChild(overlay);
-
-        // Lightbox Click Handler
-        wrapper.addEventListener('click', () => {
-            // Check if already open (debouncing)
-            if (document.querySelector('.marquee-item-clone')) return;
-
-            // Pause marquee
-            isPaused = true;
-
-            // 1. Get initial position
-            const rect = wrapper.getBoundingClientRect();
-
-            // 2. Create Clone
-            const clone = wrapper.cloneNode(true);
-            clone.classList.remove('marquee-item');
-            clone.classList.add('marquee-item-clone');
-
-            // Set initial fixed position
-            clone.style.top = `${rect.top}px`;
-            clone.style.left = `${rect.left}px`;
-            clone.style.width = `${rect.width}px`;
-            clone.style.height = `${rect.height}px`; // Explicit height for transition
-
-            document.body.appendChild(clone);
-            document.body.classList.add('no-scroll');
-
-            // 3. Force reflow
-            void clone.offsetWidth;
-
-            // Hide original
-            wrapper.style.opacity = '0';
-
-            // 4. Animate to center
-            backdrop.classList.add('active');
-
-            // Calculate center position and size respecting aspect ratio
-            const viewportWidth = window.innerWidth;
-            const viewportHeight = window.innerHeight;
-
-            // Get image aspect ratio
-            const imgEl = wrapper.querySelector('img');
+        // 2. Size the lightbox to fit the viewport, preserving aspect ratio
+        const imgEl = wrapper.querySelector('img');
+        const applySize = () => {
+            const vw = window.innerWidth;
+            const vh = window.innerHeight;
             const imgRatio = imgEl.naturalWidth / imgEl.naturalHeight;
-            const viewportPercent = window.innerWidth <= RESPONSIVE_WIDTH ? 0.90 : 0.8;
+            const pct = vw <= RESPONSIVE_WIDTH ? 0.90 : 0.8;
+            const maxW = vw * pct;
+            const maxH = vh * pct;
 
-            // Max viewport width or height
-            const maxWidth = viewportWidth * viewportPercent;
-            const maxHeight = viewportHeight * viewportPercent;
+            // Fit to the constraining dimension in one pass
+            let targetWidth = Math.min(maxW, maxH * imgRatio);
+            let targetHeight = targetWidth / imgRatio;
 
-            let targetWidth, targetHeight;
+            const targetTop = (vh - targetHeight) / 2;
+            const targetLeft = (vw - targetWidth) / 2;
 
-            if (imgRatio > 1) {
-                // Landscape
-                targetWidth = Math.min(maxWidth, maxHeight * imgRatio);
-                targetHeight = targetWidth / imgRatio;
-            } else {
-                // Portrait or Square
-                targetHeight = Math.min(maxHeight, maxWidth / imgRatio);
-                targetWidth = targetHeight * imgRatio;
+            // External caption on mobile when there is enough space below
+            clone.classList.remove('caption-outside');
+            if (vw <= RESPONSIVE_WIDTH) {
+                const bottomSpace = vh - (targetTop + targetHeight);
+                if (bottomSpace >= 140) {
+                    clone.classList.add('caption-outside');
+                }
             }
-
-            // Ensure we don't exceed constraints (double check)
-            if (targetWidth > maxWidth) {
-                targetWidth = maxWidth;
-                targetHeight = targetWidth / imgRatio;
-            }
-            if (targetHeight > maxHeight) {
-                targetHeight = maxHeight;
-                targetWidth = targetHeight * imgRatio;
-            }
-
-            const targetTop = (viewportHeight - targetHeight) / 2;
-            const targetLeft = (viewportWidth - targetWidth) / 2;
 
             clone.style.top = `${targetTop}px`;
             clone.style.left = `${targetLeft}px`;
             clone.style.width = `${targetWidth}px`;
             clone.style.height = `${targetHeight}px`;
-            clone.classList.add('expanded');
+        };
 
-            // Close Handler
-            const closeLightbox = () => {
-                backdrop.classList.remove('active');
-                clone.classList.remove('expanded');
+        applySize();
+        clone.classList.add('expanded');
 
-                // Animate back to original position (which might have moved slightly if paused wasn't instant, 
-                // but we paused it so it should be close). 
-                // Better: simple reverse calculation if we assume it didn't move.
-                clone.style.top = `${rect.top}px`;
-                clone.style.left = `${rect.left}px`;
-                clone.style.width = `${rect.width}px`;
-                clone.style.height = `${rect.height}px`;
+        // 3. Lock background scroll
+        const preventScroll = (e) => e.preventDefault();
+        window.addEventListener('touchmove', preventScroll, { passive: false });
+        window.addEventListener('wheel', preventScroll, { passive: false });
 
-                // Cleanup after the CSS transition finishes
-                const handleTransitionEnd = (e) => {
-                    // Only act on the clone's own transition (not children bubbling up)
-                    if (e.target !== clone || e.propertyName !== 'width') return;
+        // 4. Responsive updates on resize
+        let resizeTimeout;
+        const onResize = () => {
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(() => requestAnimationFrame(applySize), 100);
+        };
+        window.addEventListener('resize', onResize);
 
-                    clone.removeEventListener('transitionend', handleTransitionEnd);
-                    clone.remove();
-                    wrapper.style.opacity = ''; // Restore visibility
-                    document.body.classList.remove('no-scroll');
-                    isPaused = false;
-                };
+        // 5. Close handler — animate back to original position, then clean up
+        const closeLightbox = () => {
+            window.removeEventListener('touchmove', preventScroll);
+            window.removeEventListener('wheel', preventScroll);
+            window.removeEventListener('resize', onResize);
+            backdrop.classList.remove('active');
+            clone.classList.remove('expanded');
 
-                clone.addEventListener('transitionend', handleTransitionEnd);
+            const newRect = wrapper.getBoundingClientRect();
+            clone.style.top = `${newRect.top}px`;
+            clone.style.left = `${newRect.left}px`;
+            clone.style.width = `${newRect.width}px`;
+            clone.style.height = `${newRect.height}px`;
 
-                clone.removeEventListener('click', closeLightbox);
-            };
+            clone.addEventListener('transitionend', (e) => {
+                if (e.target !== clone || e.propertyName !== 'width') return;
+                clone.remove();
+                wrapper.style.opacity = '';
+                document.body.classList.remove('no-scroll');
+                resume();
+            });
+        };
 
-            clone.addEventListener('click', closeLightbox);
-        });
+        clone.addEventListener('click', closeLightbox);
+    };
 
+    const createMarqueeItem = (item) => {
+        const wrapper = document.createElement('div');
+        wrapper.className = 'marquee-item';
+        wrapper.innerHTML = `
+            <img src="${item.image}" alt="${item.artist}" crossorigin="anonymous">
+            <div class="image-overlay">
+                <span class="overlay-artist">${item.artist}</span>
+                <span class="overlay-date">${item.date}</span>
+            </div>
+        `;
+        wrapper.addEventListener('click', () => openLightbox(wrapper));
         return wrapper;
     };
 
@@ -516,13 +493,7 @@ if (marqueeOriginal && marqueeDuplicate) {
         // Start animation
         requestAnimationFrame(animateScroll);
 
-        // Pause on hover/touch
-        const pause = () => isPaused = true;
-        const resume = () => {
-            if (!document.querySelector('.marquee-item-clone')) {
-                isPaused = false;
-            }
-        };
+        // Pause on hover/touch (pause/resume defined at top of marquee block)
 
         let mouseInMask = false;
 
@@ -536,8 +507,66 @@ if (marqueeOriginal && marqueeDuplicate) {
             resume();
             clearHovered();
         });
-        mask.addEventListener('touchstart', pause, { passive: true });
-        mask.addEventListener('touchend', resume);
+        let lastTouchX = 0;
+        let lastTouchY = 0;
+        let lastTouchTime = 0;
+        let touchVelocity = 0;
+
+        mask.addEventListener('touchstart', (e) => {
+            pause();
+            const touch = e.touches[0];
+            lastTouchX = touch.clientX;
+            lastTouchY = touch.clientY;
+            lastTouchTime = e.timeStamp;
+            touchVelocity = 0;
+            wheelVelocity = 0; // stop existing momentum on grab
+        }, { passive: true });
+
+        mask.addEventListener('touchmove', (e) => {
+            const touch = e.touches[0];
+            const currentX = touch.clientX;
+            const currentY = touch.clientY;
+
+            const deltaX = lastTouchX - currentX; // drag left -> shift track right -> positive scroll delta
+            const deltaY = lastTouchY - currentY;
+            const delta = horizontal ? deltaX : deltaY;
+
+            // Only prevent default page scroll if they are pulling primarily along the marquee axis
+            if (horizontal && Math.abs(deltaX) > Math.abs(deltaY)) {
+                if (e.cancelable) e.preventDefault();
+            } else if (!horizontal && Math.abs(deltaY) > Math.abs(deltaX)) {
+                if (e.cancelable) e.preventDefault();
+            }
+
+            scrollPos += delta;
+
+            const now = e.timeStamp;
+            const dt = now - lastTouchTime;
+            if (dt > 0) {
+                const instVelocity = (delta / dt) * 16.66; // scale to pixels-per-frame (approx 60fps)
+                touchVelocity = touchVelocity * 0.5 + instVelocity * 0.5; // smooth velocity
+            }
+
+            lastTouchX = currentX;
+            lastTouchY = currentY;
+            lastTouchTime = now;
+
+            wrapScrollPos();
+            applyTransform();
+            scheduleHoverUpdate();
+        }, { passive: false });
+
+        mask.addEventListener('touchend', (e) => {
+            resume();
+            clearHovered();
+            // If they released smoothly after moving, carry the smoothed momentum over to the wheel decay physics
+            // If they held still for >100ms before releasing, stop completely
+            if (e.timeStamp - lastTouchTime < 100) {
+                wheelVelocity = touchVelocity;
+            } else {
+                wheelVelocity = 0;
+            }
+        });
 
         // Hover tracking — transforms don't trigger :hover re-evaluation,
         // so we use elementFromPoint to manage a .hovered class after wheel scroll.

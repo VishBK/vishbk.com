@@ -15,6 +15,9 @@ FROM php:8.4-apache
 # Enable Apache mod_rewrite for .htaccess support
 RUN a2enmod rewrite
 
+# Disable default Apache /icons/ alias so it doesn't block our custom icons folder
+RUN sed -i 's/^Alias \/icons\//#Alias \/icons\//g' /etc/apache2/mods-available/alias.conf
+
 # Allow .htaccess to override configurations
 RUN sed -i '/<Directory \/var\/www\/>/,/<\/Directory>/ s/AllowOverride None/AllowOverride All/' /etc/apache2/apache2.conf
 
