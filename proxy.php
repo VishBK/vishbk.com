@@ -22,6 +22,19 @@ if (isset($_SERVER['HTTP_ORIGIN'])) {
 
 header("Content-Type: application/json");
 
+// Define a cache file in the system's temporary directory to avoid permission issues
+$cacheFile = sys_get_temp_dir() . '/vishbk_lastfm_cache.json';
+$cacheTime = 10; // Cache duration in seconds
+
+// Check if we have a valid, unexpired cache
+if (file_exists($cacheFile) && (time() - filemtime($cacheFile) < $cacheTime)) {
+    $cachedData = file_get_contents($cacheFile);
+    if ($cachedData) {
+        echo $cachedData;
+        exit;
+    }
+}
+
 // Validate API key is available
 $apiKey = getenv('LASTFM_API_KEY');
 if (!$apiKey) {
@@ -65,5 +78,8 @@ if ($httpCode !== 200) {
     echo json_encode(["error" => "Upstream API returned HTTP $httpCode"]);
     exit;
 }
+
+// Save fresh data to cache for future requests
+file_put_contents($cacheFile, $response);
 
 echo $response;

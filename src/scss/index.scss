@@ -34,7 +34,7 @@ body {
 
 body.no-scroll {
     overflow: hidden;
-    touch-action: none;   
+    touch-action: none;
 }
 
 h1 {
@@ -115,7 +115,7 @@ h3 {
     cursor: pointer;
 }
 
-@media (hover: hover) {
+@media (any-hover: hover) {
     %button:hover {
         background-color: color.change(var.$light-color, $alpha: 0.2);
         scale: 1.15;
@@ -164,13 +164,13 @@ h3 {
     transition: scale 0.2s ease-in-out, color 0.5s ease;
 }
 
-@media (hover: hover) {
+@media (any-hover: hover) {
     .media-icons a:hover {
         scale: 1.2;
     }
 }
 
-@media (hover: hover) {
+@media (any-hover: hover) {
     .media-icons a.fa-envelope:hover {
         color: #fbbc04;
     }

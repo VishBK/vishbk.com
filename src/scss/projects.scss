@@ -154,7 +154,7 @@ html {
     }
 
     // --- State Interactions (Hover/Active) ---
-    @media (hover: hover) {
+    @media (any-hover: hover) {
         &:hover .card-content {
             background-color: rgb(var(--card-bg-color), 85%);
             transform: scale(1.05); // Works in expanded state too
@@ -247,7 +247,7 @@ html {
     visibility: hidden;
 }
 
-@media (hover: hover) {
+@media (any-hover: hover) {
 
     .project-card.expanded .prev:hover,
     .project-card.expanded .next:hover {
@@ -396,7 +396,7 @@ svg {
     }
 }
 
-@media (hover: hover) {
+@media (any-hover: hover) {
     &:hover svg {
         @each $index, $color in $tableau-colors {
             path:nth-child(#{$index}) {

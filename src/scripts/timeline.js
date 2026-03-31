@@ -352,24 +352,34 @@ class Timeline {
      */
     resolveEventOverlaps() {
         const isMobile = window.matchMedia(`(max-width: ${this.RESPONSIVE_WIDTH}px)`).matches;
-        let allEvents = this.container.querySelectorAll('.timeline-event');
+        let allEvents = Array.from(this.container.querySelectorAll('.timeline-event'));
         let columnTops = { left: 0, right: 0 }; // Tracks the bottom-most Y-coordinate for each column to stack events correctly
 
-        allEvents.forEach(event => {
+        // Pass 1: Read all DOM geometry to prevent layout thrashing
+        const eventMetrics = allEvents.map(event => {
             const timelineContent = event.querySelector('.expandable-content');
             const header = event.querySelector('.event-header');
-
-            // Dynamically measure heights to guarantee precision
+            
             const style = window.getComputedStyle(event);
             const verticalPadding = parseFloat(style.paddingTop) + parseFloat(style.paddingBottom);
+            
+            return {
+                event,
+                timelineContent,
+                scrollHeight: timelineContent.scrollHeight,
+                offsetHeight: header.offsetHeight,
+                verticalPadding,
+            };
+        });
 
-            // scrollHeight gives the full unclipped height of the content natively
-            const trueExpandedHeight = header.offsetHeight + timelineContent.scrollHeight + verticalPadding;
-            const trueCollapsedHeight = header.offsetHeight + verticalPadding;
+        // Pass 2: Calculate layout and apply all style modifications
+        eventMetrics.forEach(({ event, timelineContent, scrollHeight, offsetHeight, verticalPadding }) => {
+            const trueExpandedHeight = offsetHeight + scrollHeight + verticalPadding;
+            const trueCollapsedHeight = offsetHeight + verticalPadding;
 
             // Trigger the visual CSS transition by setting the maxHeight property.
             if (event.classList.contains('expanded')) {
-                timelineContent.style.maxHeight = timelineContent.scrollHeight + "px";
+                timelineContent.style.maxHeight = scrollHeight + "px";
             } else {
                 timelineContent.style.maxHeight = null;
             }

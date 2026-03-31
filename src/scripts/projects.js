@@ -15,19 +15,24 @@ function arrangeInGrid(cards, container) {
     const containerRect = container.getBoundingClientRect();
     const containerWidth = containerRect.width;
 
+    // Pre-calculate layout dimensions in a single pass to batch DOM reads
+    const cardWidths = Array.from(cards).map(card => card.offsetWidth);
+    const cardHeights = Array.from(cards).map(card => card.offsetHeight);
+
     // Use a non-expanded card as the reference for grid dimensions
-    const referenceCard = Array.from(cards).find(c => !c.classList.contains('expanded')) || cards[0];
-    const cardWidth = referenceCard.offsetWidth;
+    const referenceCardIdx = Array.from(cards).findIndex(c => !c.classList.contains('expanded'));
+    const refIdx = referenceCardIdx >= 0 ? referenceCardIdx : 0;
+    const cardWidth = cardWidths[refIdx];
 
     // Find the max height among all cards (excluding expanded ones if possible for safety, though height usually consistent)
     let maxCardHeight = 0;
-    cards.forEach(card => {
+    cards.forEach((card, index) => {
         if (!card.classList.contains('expanded')) {
-            maxCardHeight = Math.max(maxCardHeight, card.offsetHeight);
+            maxCardHeight = Math.max(maxCardHeight, cardHeights[index]);
         }
     });
     // Fallback if all are expanded (unlikely) or something went wrong
-    if (maxCardHeight === 0) maxCardHeight = referenceCard.offsetHeight;
+    if (maxCardHeight === 0) maxCardHeight = cardHeights[refIdx];
 
     const minHorizontalGap = 40;
     const verticalGap = 40; // Kept small and fixed
@@ -48,6 +53,7 @@ function arrangeInGrid(cards, container) {
     const startX = (containerWidth - gridWidth) / 2;
     const startY = 40; // Moderate top margin
 
+    // DOM writes start here
     cards.forEach((card, index) => {
         const col = index % cols;
         const row = Math.floor(index / cols);
@@ -70,13 +76,13 @@ function arrangeInGrid(cards, container) {
     // Calculate the total height needed by the grid cards.
     // Absolute children don't expand their parent, so we must set it manually.
     let maxY = 0;
-    cards.forEach(card => {
+    cards.forEach((card, index) => {
         // Use the transform to find where it was placed
         const transform = card.style.getPropertyValue('--initial-transform');
         const match = transform.match(/translate\((.*)px, (.*)px\)/);
         if (match) {
             const y = parseFloat(match[2]);
-            const height = card.offsetHeight || maxCardHeight;
+            const height = cardHeights[index] || maxCardHeight;
             maxY = Math.max(maxY, y + height);
         }
     });

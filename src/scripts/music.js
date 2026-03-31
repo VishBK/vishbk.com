@@ -458,6 +458,7 @@ if (marqueeOriginal && marqueeDuplicate) {
             }
         };
 
+        let animationId = null;
         const animateScroll = (now) => {
             if (!lastTime) lastTime = now;
             const dt = Math.min(now - lastTime, 50); // cap at 50ms to avoid jumps on tab switch
@@ -487,11 +488,26 @@ if (marqueeOriginal && marqueeDuplicate) {
                 if (mouseInMask) scheduleHoverUpdate();
             }
 
-            requestAnimationFrame(animateScroll);
+            animationId = requestAnimationFrame(animateScroll);
         };
 
         // Start animation
-        requestAnimationFrame(animateScroll);
+        animationId = requestAnimationFrame(animateScroll);
+
+        // Pause animation when tab is hidden
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden) {
+                if (animationId) {
+                    cancelAnimationFrame(animationId);
+                    animationId = null;
+                }
+            } else {
+                if (!animationId) {
+                    lastTime = performance.now(); // Reset lastTime to avoid a large dt jump
+                    animationId = requestAnimationFrame(animateScroll);
+                }
+            }
+        });
 
         // Pause on hover/touch (pause/resume defined at top of marquee block)
 

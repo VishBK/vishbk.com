@@ -277,8 +277,6 @@ async function setColors() {
             targetColors[0] = palette[0].rgb();
             targetColors[1] = palette[1].rgb();
             targetColors[2] = palette[2].rgb();
-            console.log(targetColors);
-            console.log(palette);
 
             // Also update CSS vars for other UI elements if needed
             // NOTE: We update these in the updateColors loop now for smooth fading.
@@ -329,7 +327,8 @@ async function createBackground() {
     await lastfmPromise;
     hoverInteraction();
 
-    setInterval(async () => {
+    const checkLastFm = async () => {
+        if (document.hidden) return;
         if (lastfm) {
             const updateStatus = await lastfm.updateTrack();
             if (updateStatus.albumArtChanged) {
@@ -339,7 +338,15 @@ async function createBackground() {
             lastfm = await LastFM.create().catch(handleLastFMError);
             await setColors();
         }
-    }, 10000);
+    };
+
+    setInterval(checkLastFm, 10000);
+
+    document.addEventListener('visibilitychange', () => {
+        if (!document.hidden) {
+            checkLastFm();
+        }
+    });
 }
 
 window.addEventListener("DOMContentLoaded", createBackground);

@@ -108,7 +108,7 @@ html {
             }
         }
 
-        @media (hover: hover) {
+        @media (any-hover: hover) {
             &.hovered {
                 scale: 1.1;
                 z-index: 10;
@@ -201,7 +201,7 @@ html {
         }
     }
 
-    @media (hover: hover) {
+    @media (any-hover: hover) {
         &:hover {
             transition: all 0.5s ease-in-out, scale 0.25s ease-out;
             scale: 1.05;
@@ -368,17 +368,18 @@ tableau-viz.loaded~.skeleton-loader,
         text-decoration: none;
         z-index: 10;
 
-        transition: filter 0.5s ease-in-out, color 0.5s ease-in-out, transform 0.2s ease;
+        transition: opacity 0.5s ease-in-out, filter 0.5s ease-in-out, color 0.5s ease-in-out, transform 0.2s ease;
         cursor: pointer;
 
         &.is-playing {
             animation: pulseOpacity 4s infinite ease;
         }
 
-        @media (hover: hover) {
+        @media (any-hover: hover) {
             &:hover {
                 animation-play-state: paused;
-                filter: brightness(1.5);
+                opacity: 1;
+                filter: brightness(1.4);
             }
         }
     }
